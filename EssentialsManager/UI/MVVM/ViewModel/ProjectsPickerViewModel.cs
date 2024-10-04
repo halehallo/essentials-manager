@@ -1,34 +1,46 @@
 ﻿using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows.Input;
 using BL;
 using BL.Exceptions;
 using DOM.ProjectFolders;
 using Microsoft.Win32;
+using UI.Core;
+using UI.MVVM.Model.Error;
 using UI.Templates;
 
-namespace UI;
+namespace UI.MVVM.ViewModel;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
+public class ProjectsPickerViewModel : Core.ViewModel
 {
-    public ObservableCollection<Card> Cards { get; set; }
     private IProjectFolderManager _projectFolderManager;
     private IProjectManager _projectManager;
-    public MainWindow(IProjectFolderManager projectFolderManager, IProjectManager projectManager)
+    public ObservableCollection<Card> Cards { get; set; }
+    private ErrorTextBlock _errorTextBlock;
+    public ICommand OpenFolderCommand { get; }
+
+    public ErrorTextBlock ErrorTextBlock
+    {
+        get => _errorTextBlock;
+        set
+        {
+            _errorTextBlock = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+    public ProjectsPickerViewModel(IProjectFolderManager projectFolderManager, IProjectManager projectManager)
     {
         _projectFolderManager = projectFolderManager;
         _projectManager = projectManager;
-        InitializeComponent();
-        DataContext = this;
 
         // Retrieve data from the database
         Cards = GetDataFromDatabase();
+        OpenFolderCommand = new RelayCommand(param => OpenFolder(), o => true);
+        ErrorTextBlock = new ErrorTextBlock();
     }
     
     private ObservableCollection<Card> GetDataFromDatabase()
@@ -44,13 +56,14 @@ public partial class MainWindow : Window
         return cards;
     }
 
-    private void btnOpen_Click(object sender, RoutedEventArgs e)
+    private void OpenFolder()
     {
         // Configure open folder dialog box
-        OpenFolderDialog dialog = new();
-
-        dialog.Multiselect = false;
-        dialog.Title = "Select a folder";
+        OpenFolderDialog dialog = new()
+        {
+            Multiselect = false,
+            Title = "Select a folder"
+        };
 
         // Show open folder dialog box
         bool? result = dialog.ShowDialog();
@@ -86,7 +99,7 @@ public partial class MainWindow : Window
                 _projectManager.CompilePbsFiles();
                 
                 Cards.Add(new Card{ Name = project.Name, Picture = project.Photo });
-                CardsListview.Items.Refresh();
+                // CardsListview.Items.Refresh();
             }
             catch (ProjectAlreadyExistException exception)
             {
@@ -97,6 +110,4 @@ public partial class MainWindow : Window
             
         }
     }
-    
-    
 }

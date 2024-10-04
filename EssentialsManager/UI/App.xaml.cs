@@ -16,7 +16,10 @@ using DAL.PbsRepositories.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using UI.factories;
+using UI.Core;
+using UI.MVVM.View;
+using UI.MVVM.ViewModel;
+using UI.Services;
 
 namespace UI;
 
@@ -39,7 +42,7 @@ public partial class App : Application
     
     private void ConfigureServices(IServiceCollection services)
     {
-        // Add scoped services
+        // Add scoped services backend
         services.AddDbContext<ProjectFoldersDbContext>((optionsBuilder) =>
             optionsBuilder.UseSqlite("Data Source=../../../../Projects.db"));
         services.AddScoped<IProjectFoldersRepository, ProjectFoldersRepository>();
@@ -60,8 +63,16 @@ public partial class App : Application
         services.AddScoped<IItemManager, ItemManager>();
         services.AddScoped<IPokemonManager, PokemonManager>();
         services.AddScoped<IFileManager, FileManager>();
-        services.AddScoped<IMainWindowFactory, MainWindowFactory>();
-        
+        //
+        // Add scoped services frontend
+        services.AddSingleton<MainWindow>(serviceProvider => new MainWindow()
+        {
+            DataContext = serviceProvider.GetService<MainViewModel>()
+        });
+        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton<ProjectsPickerViewModel>();
+        services.AddSingleton<Func<Type, ViewModel>>(serviceProvider => viewModelType => (ViewModel)serviceProvider.GetService(viewModelType));
         
         services.AddLogging(configure =>
         {
@@ -75,9 +86,12 @@ public partial class App : Application
         base.OnStartup(e);
         
         // Resolve main window and show it
-        var mainWindowFactory = _serviceProvider.GetRequiredService<IMainWindowFactory>();
-        var mainWindow = mainWindowFactory.CreateMainWindow();
+        var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
         mainWindow.Show();
+        
+        // Set initial view to the project picker
+        var navigation = _serviceProvider.GetRequiredService<INavigationService>();
+        navigation.NavigateTo<ProjectsPickerViewModel>();
     }
 
     protected override void OnExit(ExitEventArgs e)
