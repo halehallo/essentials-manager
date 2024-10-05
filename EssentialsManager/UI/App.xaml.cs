@@ -20,6 +20,7 @@ using UI.Core;
 using UI.MVVM.View;
 using UI.MVVM.ViewModel;
 using UI.Services;
+using RectConverter = UI.Services.RectConverter;
 
 namespace UI;
 
@@ -73,6 +74,8 @@ public partial class App : Application
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<ProjectsPickerViewModel>();
         services.AddSingleton<Func<Type, ViewModel>>(serviceProvider => viewModelType => (ViewModel)serviceProvider.GetService(viewModelType));
+        
+        services.AddSingleton<RectConverter>();
         
         services.AddLogging(configure =>
         {

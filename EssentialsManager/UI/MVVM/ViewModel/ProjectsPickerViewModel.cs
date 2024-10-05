@@ -30,6 +30,28 @@ public class ProjectsPickerViewModel : Core.ViewModel
             OnPropertyChanged();
         }
     }
+    
+    private double _gridWidth;
+    public double GridWidth
+    {
+        get => _gridWidth;
+        set
+        {
+            _gridWidth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private double _gridHeight;
+    public double GridHeight
+    {
+        get => _gridHeight;
+        set
+        {
+            _gridHeight = value;
+            OnPropertyChanged();
+        }
+    }
 
 
     public ProjectsPickerViewModel(IProjectFolderManager projectFolderManager, IProjectManager projectManager)

@@ -9,8 +9,7 @@
         WindowState="Maximized"
         >
     
-    
-    <Grid Background="{StaticResource BackgroundColorMainWindow}">
+    <Grid Background="{StaticResource BackgroundColorDark}">
         
         <ContentControl Content="{Binding Navigation.CurrentView}"></ContentControl>
     </Grid>
