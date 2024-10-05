@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="UI.MVVM.View.FunctionalityOverviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:UI.MVVM.View"
+             xmlns:customUserControls="clr-namespace:UI.MVVM.View.CustomUserControls"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="80*"/>
+        </Grid.RowDefinitions>
+        
+        <Border VerticalAlignment="Center" HorizontalAlignment="Center" 
+                Background="{StaticResource BackgroundColorLighter}"
+                Name="ReturnHomeButton">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="10" RadiusY="10">
+                    <RectangleGeometry.Rect>
+                        <MultiBinding Converter="{StaticResource RectConverter}">
+                            <Binding ElementName="ReturnHomeButton" Path="ActualWidth"/>
+                            <Binding ElementName="ReturnHomeButton" Path="ActualHeight"/>
+                        </MultiBinding>
+                    </RectangleGeometry.Rect>
+                </RectangleGeometry>
+            </Border.Clip>
+            <Button Content="Home" BorderBrush="Transparent" Background="Transparent" Padding="20, 10"/>
+        </Border>
+        
+        <Border Grid.Row="1" 
+                Background="{StaticResource BackgroundColorDarker}"
+                Name="ContentOverview">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="10" RadiusY="10">
+                    <RectangleGeometry.Rect>
+                        <MultiBinding Converter="{StaticResource RectConverter}">
+                            <Binding ElementName="ContentOverview" Path="ActualWidth"/>
+                            <Binding ElementName="ContentOverview" Path="ActualHeight"/>
+                        </MultiBinding>
+                    </RectangleGeometry.Rect>
+                </RectangleGeometry>
+            </Border.Clip>
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                
+                <customUserControls:FunctionalityCard Grid.Column="0" Grid.Row="1" 
+                                               BackgroundColor="#e67e22" 
+                                               Text="Types"/>
+                
+                <customUserControls:FunctionalityCard Grid.Column="1" Grid.Row="1" 
+                                                      BackgroundColor="#2ecc71" 
+                                                      Text="Items"/>
+                
+                <customUserControls:FunctionalityCard Grid.Column="2" Grid.Row="1" 
+                                                      BackgroundColor="#3498db" 
+                                                      Text="Abilities"/>
+                
+                <customUserControls:FunctionalityCard Grid.Column="3" Grid.Row="1" 
+                                                      BackgroundColor="#e74c3c" 
+                                                      Text="Move"/>
+                
+                <customUserControls:FunctionalityCard Grid.Column="0" Grid.Row="2" 
+                                                      BackgroundColor="#1abc9c" 
+                                                      Text="Pokémon"/>
+                
+                <customUserControls:FunctionalityCard Grid.Column="1" Grid.Row="2" 
+                                                      BackgroundColor="#9b59b6" 
+                                                      Text="Pokédex"/>
+                
+                <customUserControls:FunctionalityCard Grid.Column="2" Grid.Row="2" 
+                                                      BackgroundColor="#f1c40f" 
+                                                      Text="Route"/>
+                
+                <customUserControls:FunctionalityCard Grid.Column="3" Grid.Row="2" 
+                                                      BackgroundColor="#6ab04c" 
+                                                      Text="Trainer"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

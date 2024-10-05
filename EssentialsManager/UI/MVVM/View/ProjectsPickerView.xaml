@@ -6,41 +6,80 @@
              xmlns:local="clr-namespace:UI.MVVM.View"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="{StaticResource BackgroundColorDark}" Name="ProjectCardsGrid">
-
-
+    <Grid Background="{StaticResource BackgroundColorDark}">
         <Grid.RowDefinitions>
             <RowDefinition Height="5*" />
-            <RowDefinition Height="75*" />
-            <RowDefinition Height="20*" MaxHeight="100" />
+            <RowDefinition Height="80*" />
+            <RowDefinition Height="15*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        
+        <Border Grid.Row="0" 
+                Background="{StaticResource BackgroundColorLight}" 
+                HorizontalAlignment= "Center" VerticalAlignment="Center" 
+                Padding="10,5"
+                Name="ErrorTextBorder">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="5" RadiusY="5">
+                    <RectangleGeometry.Rect>
+                        <MultiBinding Converter="{StaticResource RectConverter}">
+                            <Binding ElementName="ErrorTextBorder" Path="ActualWidth"/>
+                            <Binding ElementName="ErrorTextBorder" Path="ActualHeight"/>
+                        </MultiBinding>
+                    </RectangleGeometry.Rect>
+                </RectangleGeometry>
+            </Border.Clip>
             <TextBlock Text="{Binding ErrorTextBlock.Text}" Style="{StaticResource ErrorText}" />
-        </Grid>
+        </Border>
+        <Border Grid.Row="1" Background="{StaticResource BackgroundColorDarker}" Name="ProjectCardListBorder">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="30" RadiusY="30">
+                    <RectangleGeometry.Rect>
+                        <MultiBinding Converter="{StaticResource RectConverter}">
+                            <Binding ElementName="ProjectCardListBorder" Path="ActualWidth"/>
+                            <Binding ElementName="ProjectCardListBorder" Path="ActualHeight"/>
+                        </MultiBinding>
+                    </RectangleGeometry.Rect>
+                </RectangleGeometry>
+            </Border.Clip>
+            
+            <ListView Background="Transparent"
+                      ItemsSource="{Binding Cards}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      HorizontalAlignment="Center" ItemTemplate="{StaticResource ProjectCardDataTemplate}"
+                      BorderBrush="Transparent">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3" HorizontalAlignment="Center" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                    </Style>
+                </ListView.ItemContainerStyle>
 
-        <ListView Grid.Row="1" Background="{StaticResource BackgroundColorDark}"
-                  ItemsSource="{Binding Cards}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  HorizontalAlignment="Center" ItemTemplate="{StaticResource ProjectCardDataTemplate}">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="3" HorizontalAlignment="Center"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                </Style>
-            </ListView.ItemContainerStyle>
-
-        </ListView>
-
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Height="23" HorizontalAlignment="Center" Margin="12,0,0,34" Name="BtnOpen"
-                    VerticalAlignment="Bottom" Width="75" Command="{Binding OpenFolderCommand}">
+            </ListView>
+        </Border>
+        <Border Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                Background="{StaticResource BackgroundColorLighter}"
+                Name="AddProjectButtonBorder">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="15" RadiusY="15">
+                    <RectangleGeometry.Rect>
+                        <MultiBinding Converter="{StaticResource RectConverter}">
+                            <Binding ElementName="AddProjectButtonBorder" Path="ActualWidth"/>
+                            <Binding ElementName="AddProjectButtonBorder" Path="ActualHeight"/>
+                        </MultiBinding>
+                    </RectangleGeometry.Rect>
+                </RectangleGeometry>
+            </Border.Clip>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Command="{Binding OpenFolderCommand}" 
+                    BorderBrush="Transparent"
+                    Padding="20, 10" Background="Transparent">
                 Open
             </Button>
-        </StackPanel>
+        </Border>
 
 
     </Grid>

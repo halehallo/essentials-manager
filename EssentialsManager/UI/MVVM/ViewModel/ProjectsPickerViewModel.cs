@@ -30,29 +30,6 @@ public class ProjectsPickerViewModel : Core.ViewModel
             OnPropertyChanged();
         }
     }
-    
-    private double _gridWidth;
-    public double GridWidth
-    {
-        get => _gridWidth;
-        set
-        {
-            _gridWidth = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private double _gridHeight;
-    public double GridHeight
-    {
-        get => _gridHeight;
-        set
-        {
-            _gridHeight = value;
-            OnPropertyChanged();
-        }
-    }
-
 
     public ProjectsPickerViewModel(IProjectFolderManager projectFolderManager, IProjectManager projectManager)
     {
@@ -114,6 +91,11 @@ public class ProjectsPickerViewModel : Core.ViewModel
         // Show open folder dialog box
         bool? result = dialog.ShowDialog();
 
+        if (result == false || result == null)
+        {
+            ErrorTextBlock.Text = "no folder selected";
+            ErrorTextBlock.Foreground = Brushes.Red;
+        }
         // Process open folder dialog box results
         if (result == true)
         {
@@ -140,7 +122,7 @@ public class ProjectsPickerViewModel : Core.ViewModel
                 
                 // change the connection of the projects dbcontext to the newly selected project
                 _projectManager.ChangeConnectionString(fullPathToEssentialsManager + "\\project.db", fullPathToFolder);
-               
+                
                 // compile all pbs files into the database
                 _projectManager.CompilePbsFiles();
                 

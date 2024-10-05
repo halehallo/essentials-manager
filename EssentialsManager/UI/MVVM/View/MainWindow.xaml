@@ -10,8 +10,12 @@
         >
     
     <Grid Background="{StaticResource BackgroundColorDark}">
-        
-        <ContentControl Content="{Binding Navigation.CurrentView}"></ContentControl>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15*" />
+            <ColumnDefinition Width="70*" />
+            <ColumnDefinition Width="15*" />
+        </Grid.ColumnDefinitions>
+        <ContentControl Grid.Column="1" Content="{Binding Navigation.CurrentView}"></ContentControl>
     </Grid>
     
 </Window>

@@ -12,13 +12,12 @@
     </Style>
     <Style TargetType="TextBlock"
            x:Key="ErrorText">
-        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontSize" Value="14"/>
         <Setter Property="TextAlignment" Value="Center"/>
-        <Setter Property="MaxHeight" Value="50"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{Binding ErrorTextBlock.Foreground}"/>
-        <Setter Property="Background" Value="{StaticResource BackgroundColorLight}"/>
+        <Setter Property="Background" Value="Transparent"/>
     </Style>
     <Style TargetType="Image"
            x:Key="GameImage">
@@ -28,7 +27,7 @@
     
     <DataTemplate x:Key="ProjectCardDataTemplate">
         
-        <Border Name="ProjectCardBorder">
+        <Border Name="ProjectCardBorder" >
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
                     <GradientStop Color="#bdc3c7" Offset="0.0" />

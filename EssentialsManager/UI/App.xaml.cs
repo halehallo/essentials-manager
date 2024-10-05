@@ -73,6 +73,7 @@ public partial class App : Application
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<ProjectsPickerViewModel>();
+        services.AddSingleton<FunctionalityOverviewViewModel>();
         services.AddSingleton<Func<Type, ViewModel>>(serviceProvider => viewModelType => (ViewModel)serviceProvider.GetService(viewModelType));
         
         services.AddSingleton<RectConverter>();
@@ -94,7 +95,9 @@ public partial class App : Application
         
         // Set initial view to the project picker
         var navigation = _serviceProvider.GetRequiredService<INavigationService>();
-        navigation.NavigateTo<ProjectsPickerViewModel>();
+        //TODO: uncomment for right start point
+        // navigation.NavigateTo<ProjectsPickerViewModel>();
+        navigation.NavigateTo<FunctionalityOverviewViewModel>();
     }
 
     protected override void OnExit(ExitEventArgs e)

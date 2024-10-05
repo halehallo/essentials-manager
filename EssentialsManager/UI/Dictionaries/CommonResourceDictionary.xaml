@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <SolidColorBrush x:Key="BackgroundColorDark" Color="#2c3e50"/>
+    <SolidColorBrush x:Key="BackgroundColorDarker" Color="#2c3e50"/>
+    <SolidColorBrush x:Key="BackgroundColorDark" Color="#34495e"/>
     <SolidColorBrush x:Key="BackgroundColorLight" Color="#bdc3c7"/>
+    <SolidColorBrush x:Key="BackgroundColorLighter" Color="#ecf0f1"/>
     <SolidColorBrush x:Key="TextColorLight" Color="#ecf0f1"/>
     <SolidColorBrush x:Key="TextColorDark" Color="#34495e"/>
 </ResourceDictionary>
