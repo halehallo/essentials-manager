@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using BL;
 using BL.Exceptions;
 using DOM.ProjectFolders;
@@ -37,10 +37,34 @@ public class ProjectsPickerViewModel : Core.ViewModel
         _projectFolderManager = projectFolderManager;
         _projectManager = projectManager;
 
+        ErrorTextBlock = new ErrorTextBlock()
+        {
+            Text = "no errors",
+            Foreground = Brushes.Green
+        };
+
+        
+        
         // Retrieve data from the database
         Cards = GetDataFromDatabase();
+        
         OpenFolderCommand = new RelayCommand(param => OpenFolder(), o => true);
-        ErrorTextBlock = new ErrorTextBlock();
+        
+        SetTestData();
+        
+    }
+
+    private void SetTestData()
+    {
+        for (int i = 1; i < 5; i++)
+        {
+            Cards.Add(new Card()
+            {
+                Name = $"Test Card {i}",
+                Picture = "C:\\Users\\hanne\\private\\pokemon\\manager_app\\testing\\Pokemon Essentials v21.1 2023-07-30\\Graphics\\Titles\\title.png"
+            });
+        }
+        
     }
     
     private ObservableCollection<Card> GetDataFromDatabase()

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Windows.Media;
+using UI.Core;
 
 namespace UI.MVVM.Model.Error;
 

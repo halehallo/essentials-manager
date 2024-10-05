@@ -1,4 +1,43 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
+    <Style TargetType="TextBlock"
+           x:Key="GameTitleText">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="MaxHeight" Value="50"/>
+    </Style>
+    <Style TargetType="TextBlock"
+           x:Key="ErrorText">
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="MaxHeight" Value="50"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{Binding ErrorTextBlock.Foreground}"/>
+    </Style>
+    <Style TargetType="Image"
+           x:Key="GameImage">
+        <Setter Property="StretchDirection" Value="Both"/>
+    </Style>
+    <Style TargetType="Border"
+           x:Key="GameBorder">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    
+    <DataTemplate x:Key="ProjectCardDataTemplate">
+        <Border Style="{StaticResource GameBorder}" Background="#ecf0f1">
+            <StackPanel Background="#ecf0f1">
+                <Viewbox Stretch="Uniform" MaxHeight="400">
+                    <Image Source="{Binding Picture}" Style="{StaticResource GameImage}"/>
+                </Viewbox>
+                <TextBlock Text="{Binding Name}" Style="{StaticResource GameTitleText}" />
+            </StackPanel>
+        </Border>
+    </DataTemplate>
 </ResourceDictionary>
