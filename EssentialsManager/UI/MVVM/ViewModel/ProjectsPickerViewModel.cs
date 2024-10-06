@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using BL;
@@ -8,8 +7,9 @@ using BL.Exceptions;
 using DOM.ProjectFolders;
 using Microsoft.Win32;
 using UI.Core;
+using UI.MVVM.Model;
 using UI.MVVM.Model.Error;
-using UI.Templates;
+using UI.Services;
 
 namespace UI.MVVM.ViewModel;
 
@@ -17,7 +17,22 @@ public class ProjectsPickerViewModel : Core.ViewModel
 {
     private IProjectFolderManager _projectFolderManager;
     private IProjectManager _projectManager;
-    public ObservableCollection<Card> Cards { get; set; }
+    
+    private INavigationService _navigation;
+
+    public INavigationService Navigation
+    {
+        get => _navigation;
+        set
+        {
+            _navigation = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    public RelayCommand NavigateToProjectFunctionalityCommand { get; set; }
+    
+    public ObservableCollection<ProjectCard> Cards { get; set; }
     private ErrorTextBlock _errorTextBlock;
     public ICommand OpenFolderCommand { get; }
 
@@ -31,10 +46,13 @@ public class ProjectsPickerViewModel : Core.ViewModel
         }
     }
 
-    public ProjectsPickerViewModel(IProjectFolderManager projectFolderManager, IProjectManager projectManager)
+    public ProjectsPickerViewModel(IProjectFolderManager projectFolderManager, IProjectManager projectManager, INavigationService navigationService)
     {
         _projectFolderManager = projectFolderManager;
         _projectManager = projectManager;
+        
+        Navigation = navigationService;
+        NavigateToProjectFunctionalityCommand = new RelayCommand(NavigateToProjectFunctionality, o => true);
 
         ErrorTextBlock = new ErrorTextBlock()
         {
@@ -49,7 +67,7 @@ public class ProjectsPickerViewModel : Core.ViewModel
         
         OpenFolderCommand = new RelayCommand(param => OpenFolder(), o => true);
         
-        SetTestData();
+        // SetTestData();
         
     }
 
@@ -57,7 +75,7 @@ public class ProjectsPickerViewModel : Core.ViewModel
     {
         for (int i = 1; i < 5; i++)
         {
-            Cards.Add(new Card()
+            Cards.Add(new ProjectCard()
             {
                 Name = $"Test Card {i}",
                 Picture = "C:\\Users\\hanne\\private\\pokemon\\manager_app\\testing\\Pokemon Essentials v21.1 2023-07-30\\Graphics\\Titles\\title.png"
@@ -65,15 +83,25 @@ public class ProjectsPickerViewModel : Core.ViewModel
         }
         
     }
+
+    private void NavigateToProjectFunctionality(object projectCardObj)
+    {
+        if (projectCardObj is ProjectCard projectCard)
+        {
+            _projectManager.ChangeConnectionString(projectCard.FolderPath);
+            Navigation.NavigateTo<FunctionalityOverviewViewModel>();
+        }
+        
+    }
     
-    private ObservableCollection<Card> GetDataFromDatabase()
+    private ObservableCollection<ProjectCard> GetDataFromDatabase()
     {
         // Connect to the database and retrieve data
         IEnumerable<Project> projects = _projectFolderManager.GetProjects();
-        ObservableCollection<Card> cards = new ObservableCollection<Card>();
+        ObservableCollection<ProjectCard> cards = new ObservableCollection<ProjectCard>();
         foreach (var project in projects)
         {
-            cards.Add(new Card{ Name = project.Name, Picture = project.Photo});
+            cards.Add(new ProjectCard{ Name = project.Name, Picture = project.Photo, FolderPath = project.FolderPath + "\\EssentialsManager\\project.db"});
         }
         
         return cards;
@@ -121,13 +149,15 @@ public class ProjectsPickerViewModel : Core.ViewModel
                 Project project = _projectFolderManager.AddProject(folderNameOnly, fullPathToFolder);
                 
                 // change the connection of the projects dbcontext to the newly selected project
-                _projectManager.ChangeConnectionString(fullPathToEssentialsManager + "\\project.db", fullPathToFolder);
+                _projectManager.ChangeConnectionString(fullPathToFolder);
                 
                 // compile all pbs files into the database
+                //TODO: uncomment but fix behavior
                 _projectManager.CompilePbsFiles();
                 
-                Cards.Add(new Card{ Name = project.Name, Picture = project.Photo });
+                Cards.Add(new ProjectCard{ Name = project.Name, Picture = project.Photo, FolderPath = fullPathToFolder });
                 // CardsListview.Items.Refresh();
+                _projectManager.ResetConnectionString();
             }
             catch (ProjectAlreadyExistException exception)
             {

@@ -4,6 +4,7 @@ namespace BL;
 
 public interface IProjectManager
 {
-    public bool ChangeConnectionString(string connectionString, string folderpath);
+    public bool ChangeConnectionString(string folderpath);
+    public bool ResetConnectionString();
     public void CompilePbsFiles();
 }

@@ -29,6 +29,7 @@
                 </RectangleGeometry>
             </Border.Clip>
             <TextBlock Text="{Binding ErrorTextBlock.Text}" Style="{StaticResource ErrorText}" />
+            
         </Border>
         <Border Grid.Row="1" Background="{StaticResource BackgroundColorDarker}" Name="ProjectCardListBorder">
             <Border.Clip>

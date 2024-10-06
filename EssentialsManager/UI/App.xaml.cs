@@ -96,8 +96,8 @@ public partial class App : Application
         // Set initial view to the project picker
         var navigation = _serviceProvider.GetRequiredService<INavigationService>();
         //TODO: uncomment for right start point
-        // navigation.NavigateTo<ProjectsPickerViewModel>();
-        navigation.NavigateTo<FunctionalityOverviewViewModel>();
+        navigation.NavigateTo<ProjectsPickerViewModel>();
+        // navigation.NavigateTo<FunctionalityOverviewViewModel>();
     }
 
     protected override void OnExit(ExitEventArgs e)

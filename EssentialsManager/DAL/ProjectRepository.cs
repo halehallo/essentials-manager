@@ -25,8 +25,8 @@ public class ProjectRepository : IProjectRepository
         {
             ProjectDbContext disposableDbContext = ProjectDbContextFactory.CreateDbContext(connectionString);
             disposableDbContext.Dispose();
-            _context.Database.GetDbConnection().ConnectionString = connectionString;
             _context.Database.CloseConnection();
+            _context.Database.GetDbConnection().ConnectionString = connectionString;
             _context.Database.OpenConnection();
             Console.WriteLine(_context.Database.GetDbConnection().ConnectionString);
 

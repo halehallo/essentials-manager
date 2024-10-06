@@ -17,11 +17,19 @@ public class ProjectManager : IProjectManager
         _pbsManager = pbsManager;
     }
 
-    public bool ChangeConnectionString(string datasource, string newFolderpath)
+    public bool ChangeConnectionString(string newFolderpath)
     {
-        string connectionString = "Data Source=" + datasource;
+        string connectionString = "Data Source=" + newFolderpath+ "\\EssentialsManager\\project.db";
         Folderpath = newFolderpath;
         _pbsManager.ChangeFolderPath(newFolderpath);
+        return _repository.UpdateConnectionString(connectionString);
+    }
+
+    public bool ResetConnectionString()
+    {
+        string connectionString = "Data Source=defaultProjectDatabase.db";
+        Folderpath = "";
+        _pbsManager.ChangeFolderPath("");
         return _repository.UpdateConnectionString(connectionString);
     }
 
