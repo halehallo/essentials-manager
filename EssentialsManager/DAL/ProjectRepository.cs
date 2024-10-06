@@ -23,9 +23,11 @@ public class ProjectRepository : IProjectRepository
     {
         try
         {
-            // ProjectDbContext disposableDbContext = ProjectDbContextFactory.CreateDbContext(connectionString);
-            // disposableDbContext.Dispose();
+            //new context so the database initializes in case of no file
             _context.Database.CloseConnection();
+            ProjectDbContext disposableDbContext = ProjectDbContextFactory.CreateDbContext(connectionString);
+            disposableDbContext.Dispose();
+            
             _context.Database.GetDbConnection().ConnectionString = connectionString;
             _context.Database.OpenConnection();
             Console.WriteLine(_context.Database.GetDbConnection().ConnectionString);

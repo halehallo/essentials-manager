@@ -6,4 +6,5 @@
     <SolidColorBrush x:Key="BackgroundColorLighter" Color="#ecf0f1"/>
     <SolidColorBrush x:Key="TextColorLight" Color="#ecf0f1"/>
     <SolidColorBrush x:Key="TextColorDark" Color="#34495e"/>
+    
 </ResourceDictionary>

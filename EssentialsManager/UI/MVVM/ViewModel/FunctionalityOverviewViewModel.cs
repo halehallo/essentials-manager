@@ -7,9 +7,9 @@ namespace UI.MVVM.ViewModel;
 
 public class FunctionalityOverviewViewModel : Core.ViewModel
 {
-    private IProjectFolderManager _projectFolderManager;
     private IProjectManager _projectManager;
     private INavigationService _navigation;
+    private TypeEffectivenessViewModel _typeEffectivenessViewModel;
 
     public INavigationService Navigation
     {
@@ -24,12 +24,12 @@ public class FunctionalityOverviewViewModel : Core.ViewModel
     public RelayCommand NavigateToProjectPickerCommand { get; set; }
     public RelayCommand NavigateToTypeEffectivenessViewCommand { get; set; }
 
-    public FunctionalityOverviewViewModel(IProjectFolderManager projectFolderManager, IProjectManager projectManager,
-        INavigationService navigationService)
+    public FunctionalityOverviewViewModel(IProjectManager projectManager,
+        INavigationService navigationService, TypeEffectivenessViewModel typeEffectivenessViewModel)
     {
-        _projectFolderManager = projectFolderManager;
         _projectManager = projectManager;
-
+        _typeEffectivenessViewModel = typeEffectivenessViewModel;
+        
         Navigation = navigationService;
         NavigateToProjectPickerCommand = new RelayCommand(param => NavigateToProjectFunctionality(), o => true);
         NavigateToTypeEffectivenessViewCommand = new RelayCommand(param => NavigateToTypeEffectivenessView(), o => true);
@@ -43,7 +43,7 @@ public class FunctionalityOverviewViewModel : Core.ViewModel
     
     private void NavigateToTypeEffectivenessView()
     {
-        //TODO: maybe need to read data from database here, i dont know yet
+        _typeEffectivenessViewModel.ReadTypeImages();
         Navigation.NavigateTo<TypeEffectivenessViewModel>();
     }
 }

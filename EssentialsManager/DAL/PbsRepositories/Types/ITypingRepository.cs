@@ -8,7 +8,9 @@ public interface ITypingRepository
     Typing ReadTyping(string internalName);
     void UpdateTyping(Typing type);
     ICollection<Typing> ReadAllTypings();
-    ICollection<Typing> ReadAllTypingsWithJoin();
+    IEnumerable<Typing> ReadAllTypingsWithJoin();
+    IEnumerable<Typing> ReadAllTypingsWithFullJoin();
+    bool HasAnyTyping();
     void CreateTypingWeakness(TypingWeakness weakness);
     void CreateTypingWeaknessesBatch(IEnumerable<TypingWeakness> typingWeaknesses);
 }

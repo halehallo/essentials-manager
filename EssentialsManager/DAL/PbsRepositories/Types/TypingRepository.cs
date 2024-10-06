@@ -37,13 +37,32 @@ public class TypingRepository : ITypingRepository
             .ToList();
     }
 
-    public ICollection<Typing> ReadAllTypingsWithJoin()
+    public IEnumerable<Typing> ReadAllTypingsWithJoin()
     {
         return _context.Types
             .Include(t => t.Weaknesses)
+            .ThenInclude(w => w.Weakness)
             .Include(t => t.Resistances)
+            .ThenInclude(r => r.Resistance)
             .Include(t => t.Immunities)
+            .ThenInclude(i => i.Immunity)
             .ToList();
+    }
+    public IEnumerable<Typing> ReadAllTypingsWithFullJoin()
+    {
+        return _context.Types
+            .Include(t => t.Weaknesses)
+            .ThenInclude(w => w.Weakness)
+            .Include(t => t.Resistances)
+            .ThenInclude(r => r.Resistance)
+            .Include(t => t.Immunities)
+            .ThenInclude(i => i.Immunity)
+            .ToList();
+    }
+
+    public bool HasAnyTyping()
+    {
+        return _context.Types.Any();
     }
 
     public void CreateTypingWeakness(TypingWeakness weakness)

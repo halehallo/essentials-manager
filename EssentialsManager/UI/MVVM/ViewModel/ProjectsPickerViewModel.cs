@@ -152,7 +152,6 @@ public class ProjectsPickerViewModel : Core.ViewModel
                 _projectManager.ChangeConnectionString(fullPathToFolder);
                 
                 // compile all pbs files into the database
-                //TODO: uncomment but fix behavior
                 _projectManager.CompilePbsFiles();
                 
                 Cards.Add(new ProjectCard{ Name = project.Name, Picture = project.Photo, FolderPath = fullPathToFolder });

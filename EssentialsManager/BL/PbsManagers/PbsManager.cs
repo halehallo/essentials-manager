@@ -113,6 +113,11 @@ public class PbsManager : IPbsManager
         LoadPokemon();
     }
 
+    public bool HasDataSaved()
+    {
+        return _typeManager.HasData();
+    }
+
     private void LoadTypes()
     {
         // Path to your text file

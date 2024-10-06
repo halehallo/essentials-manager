@@ -18,6 +18,20 @@ public class TypeManager : ITypeManager
         LinkAllTypesInDatabase();
     }
 
+    public bool HasData()
+    {
+        return _typingRepository.HasAnyTyping();
+    }
+
+    public IEnumerable<Typing> GetAllTypesWithJoin()
+    {
+        return _typingRepository.ReadAllTypingsWithJoin();
+    }
+    public IEnumerable<Typing> GetAllTypesWithFullJoin()
+    {
+        return _typingRepository.ReadAllTypingsWithFullJoin();
+    }
+
     private void WriteAllTypesWithoutLinksToPbs(Dictionary<string, Dictionary<string, string>> blocks)
     {
         foreach (var block in blocks)
@@ -52,7 +66,7 @@ public class TypeManager : ITypeManager
 
     private void LinkAllTypesInDatabase()
     {
-        ICollection<Typing> typings = _typingRepository.ReadAllTypingsWithJoin();
+        IEnumerable<Typing> typings = _typingRepository.ReadAllTypingsWithJoin();
         
         // Create a dictionary to optimize lookups by weakness string
         var typingDictionary = typings.ToDictionary(t => t.InternalName, t => t);

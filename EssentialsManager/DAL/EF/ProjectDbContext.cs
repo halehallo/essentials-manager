@@ -123,6 +123,14 @@ public class ProjectDbContext : DbContext
         
         //Pokemons
         modelBuilder.Entity<Pokemon>()
+            .HasMany(p => p.Abilities)
+            .WithMany(a => a.PokemonsWithAbility);
+        
+        modelBuilder.Entity<Pokemon>()
+            .HasMany(p => p.HiddenAbilities)
+            .WithMany(a => a.PokemonsWithHiddenAbility);
+        
+        modelBuilder.Entity<Pokemon>()
             .HasMany(p => p.Moves)
             .WithOne(m => m.Pokemon);
         
