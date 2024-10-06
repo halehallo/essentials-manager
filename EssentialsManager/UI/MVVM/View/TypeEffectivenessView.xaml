@@ -8,42 +8,113 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="95*"/>
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="95*" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Border VerticalAlignment="Center" HorizontalAlignment="Center" 
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Background="Transparent">
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center"
                     Background="{StaticResource BackgroundColorLighter}"
                     Name="ReturnHomeButton">
                 <Border.Clip>
                     <RectangleGeometry RadiusX="10" RadiusY="10">
                         <RectangleGeometry.Rect>
                             <MultiBinding Converter="{StaticResource RectConverter}">
-                                <Binding ElementName="ReturnHomeButton" Path="ActualWidth"/>
-                                <Binding ElementName="ReturnHomeButton" Path="ActualHeight"/>
+                                <Binding ElementName="ReturnHomeButton" Path="ActualWidth" />
+                                <Binding ElementName="ReturnHomeButton" Path="ActualHeight" />
                             </MultiBinding>
                         </RectangleGeometry.Rect>
                     </RectangleGeometry>
                 </Border.Clip>
-                <Button Content="Home" BorderBrush="Transparent" Background="Transparent" Padding="20, 10" Command="{Binding NavigateToProjectPickerCommand}"/>
-            </Border>  
-            <Border VerticalAlignment="Center" HorizontalAlignment="Center" 
+                <Button Content="Home" BorderBrush="Transparent" Background="Transparent" Padding="20, 10"
+                        Command="{Binding NavigateToProjectPickerCommand}" />
+            </Border>
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center"
                     Background="{StaticResource BackgroundColorLighter}"
                     Name="ReturnFunctionalityButton">
                 <Border.Clip>
                     <RectangleGeometry RadiusX="10" RadiusY="10">
                         <RectangleGeometry.Rect>
                             <MultiBinding Converter="{StaticResource RectConverter}">
-                                <Binding ElementName="ReturnFunctionalityButton" Path="ActualWidth"/>
-                                <Binding ElementName="ReturnFunctionalityButton" Path="ActualHeight"/>
+                                <Binding ElementName="ReturnFunctionalityButton" Path="ActualWidth" />
+                                <Binding ElementName="ReturnFunctionalityButton" Path="ActualHeight" />
                             </MultiBinding>
                         </RectangleGeometry.Rect>
                     </RectangleGeometry>
                 </Border.Clip>
-                <Button Content="Functionality" BorderBrush="Transparent" Background="Transparent" Padding="20, 10" Command="{Binding NavigateToProjectPickerCommand}"/>
-            </Border>  
+                <Button Content="Functionality" BorderBrush="Transparent" Background="Transparent" Padding="20, 10"
+                        Command="{Binding NavigateToProjectPickerCommand}" />
+            </Border>
         </StackPanel>
-        
+        <Border Grid.Row="1"
+                Background="{StaticResource BackgroundColorDarker}"
+                Name="ContentBorder">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="20" RadiusY="20">
+                    <RectangleGeometry.Rect>
+                        <MultiBinding Converter="{StaticResource RectConverter}">
+                            <Binding ElementName="ContentBorder" Path="ActualWidth" />
+                            <Binding ElementName="ContentBorder" Path="ActualHeight" />
+                        </MultiBinding>
+                    </RectangleGeometry.Rect>
+                </RectangleGeometry>
+            </Border.Clip>
+            <!-- <ListView ItemsSource="{Binding TypeImages}" -->
+            <!--           Background="Transparent" HorizontalAlignment="Center" BorderBrush="Transparent"> -->
+            <!--     <ListView.ItemTemplate> -->
+            <!--         <DataTemplate> -->
+            <!--             <Image> -->
+            <!--                 <Image.Source> -->
+            <!--                     <CroppedBitmap Source="{Binding ImagePath}" -->
+            <!--                                    SourceRect="{Binding IconSourceRect}" /> -->
+            <!--                 </Image.Source> -->
+            <!--             </Image> -->
+            <!--         </DataTemplate> -->
+            <!--     </ListView.ItemTemplate> -->
+            <!--     <ListView.ItemsPanel> -->
+            <!--         <ItemsPanelTemplate> -->
+            <!--             <UniformGrid Columns="8" HorizontalAlignment="Center" /> -->
+            <!--         </ItemsPanelTemplate> -->
+            <!--     </ListView.ItemsPanel> -->
+            <!-- </ListView> -->
+
+            <ItemsControl ItemsSource="{Binding TypeEffectivenessGrid}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1" 
+                                     Columns="{Binding AmountOfTypings}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+    
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ItemsControl ItemsSource="{Binding}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Rows="{Binding DataContext.AmountOfTypings, 
+                                                        RelativeSource={RelativeSource AncestorType=Window}}" 
+                                                 Columns="1"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Black" BorderThickness="1" 
+                                            Width="Auto" Height="Auto">
+                                        <TextBlock Text="{Binding Text}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
             
+
+        </Border>
+
+
     </Grid>
 </UserControl>
