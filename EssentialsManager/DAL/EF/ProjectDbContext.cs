@@ -42,7 +42,7 @@ public class ProjectDbContext : DbContext
     
     public ProjectDbContext(DbContextOptions<ProjectDbContext> options) : base(options)
     {
-        ProjectInitializer.Initialize(this, true);
+        ProjectInitializer.Initialize(this, false);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

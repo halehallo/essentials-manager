@@ -101,7 +101,7 @@ public class ProjectsPickerViewModel : Core.ViewModel
         ObservableCollection<ProjectCard> cards = new ObservableCollection<ProjectCard>();
         foreach (var project in projects)
         {
-            cards.Add(new ProjectCard{ Name = project.Name, Picture = project.Photo, FolderPath = project.FolderPath + "\\EssentialsManager\\project.db"});
+            cards.Add(new ProjectCard{ Name = project.Name, Picture = project.Photo, FolderPath = project.FolderPath});
         }
         
         return cards;

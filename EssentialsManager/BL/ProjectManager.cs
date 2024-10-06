@@ -35,6 +35,12 @@ public class ProjectManager : IProjectManager
 
     public void CompilePbsFiles()
     {
-        _pbsManager.LoadAllPbsFiles();
+        string fullPathToDatabase = Folderpath + "\\EssentialsManager\\project.db";
+        
+        if (!File.Exists(fullPathToDatabase))
+        {
+            _pbsManager.LoadAllPbsFiles();
+        }
+        
     }
 }

@@ -23,8 +23,8 @@ public class ProjectRepository : IProjectRepository
     {
         try
         {
-            ProjectDbContext disposableDbContext = ProjectDbContextFactory.CreateDbContext(connectionString);
-            disposableDbContext.Dispose();
+            // ProjectDbContext disposableDbContext = ProjectDbContextFactory.CreateDbContext(connectionString);
+            // disposableDbContext.Dispose();
             _context.Database.CloseConnection();
             _context.Database.GetDbConnection().ConnectionString = connectionString;
             _context.Database.OpenConnection();
