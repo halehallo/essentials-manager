@@ -9,4 +9,8 @@
     <DataTemplate DataType="{x:Type viewModel:FunctionalityOverviewViewModel}">
         <view:FunctionalityOverviewView/>
     </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type viewModel:TypeEffectivenessViewModel}">
+        <view:TypeEffectivenessView/>
+    </DataTemplate>
 </ResourceDictionary>

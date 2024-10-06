@@ -74,6 +74,7 @@ public partial class App : Application
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<ProjectsPickerViewModel>();
         services.AddSingleton<FunctionalityOverviewViewModel>();
+        services.AddSingleton<TypeEffectivenessViewModel>();
         services.AddSingleton<Func<Type, ViewModel>>(serviceProvider => viewModelType => (ViewModel)serviceProvider.GetService(viewModelType));
         
         services.AddSingleton<RectConverter>();

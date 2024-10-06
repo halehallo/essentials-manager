@@ -9,8 +9,8 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="80*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="95*"/>
         </Grid.RowDefinitions>
         
         <Border VerticalAlignment="Center" HorizontalAlignment="Center" 
@@ -26,7 +26,7 @@
                     </RectangleGeometry.Rect>
                 </RectangleGeometry>
             </Border.Clip>
-            <Button Content="Home" BorderBrush="Transparent" Background="Transparent" Padding="20, 10"/>
+            <Button Content="Home" BorderBrush="Transparent" Background="Transparent" Padding="20, 10" Command="{Binding NavigateToProjectPickerCommand}"/>
         </Border>
         
         <Border Grid.Row="1" 
@@ -58,35 +58,50 @@
                 
                 <customUserControls:FunctionalityCard Grid.Column="0" Grid.Row="1" 
                                                BackgroundColor="#e67e22" 
-                                               Text="Types"/>
+                                               Text="Types"
+                                               Command="{Binding NavigateToTypeEffectivenessViewCommand}"
+                                               />
                 
                 <customUserControls:FunctionalityCard Grid.Column="1" Grid.Row="1" 
                                                       BackgroundColor="#2ecc71" 
-                                                      Text="Items"/>
+                                                      Text="Items"
+                                                      Command="{Binding NavigateToTypeEffectivenessViewCommand}"/>
                 
                 <customUserControls:FunctionalityCard Grid.Column="2" Grid.Row="1" 
                                                       BackgroundColor="#3498db" 
-                                                      Text="Abilities"/>
+                                                      Text="Abilities"
+                                                      Command="{Binding NavigateToTypeEffectivenessViewCommand}"
+                />
                 
                 <customUserControls:FunctionalityCard Grid.Column="3" Grid.Row="1" 
                                                       BackgroundColor="#e74c3c" 
-                                                      Text="Move"/>
+                                                      Text="Move"
+                                                      Command="{Binding NavigateToTypeEffectivenessViewCommand}"
+                />
                 
                 <customUserControls:FunctionalityCard Grid.Column="0" Grid.Row="2" 
                                                       BackgroundColor="#1abc9c" 
-                                                      Text="Pokémon"/>
+                                                      Text="Pokémon"
+                                                      Command="{Binding NavigateToTypeEffectivenessViewCommand}"
+                />
                 
                 <customUserControls:FunctionalityCard Grid.Column="1" Grid.Row="2" 
                                                       BackgroundColor="#9b59b6" 
-                                                      Text="Pokédex"/>
+                                                      Text="Pokédex"
+                                                      Command="{Binding NavigateToTypeEffectivenessViewCommand}"
+                />
                 
                 <customUserControls:FunctionalityCard Grid.Column="2" Grid.Row="2" 
                                                       BackgroundColor="#f1c40f" 
-                                                      Text="Route"/>
+                                                      Text="Route"
+                                                      Command="{Binding NavigateToTypeEffectivenessViewCommand}"
+                />
                 
                 <customUserControls:FunctionalityCard Grid.Column="3" Grid.Row="2" 
                                                       BackgroundColor="#6ab04c" 
-                                                      Text="Trainer"/>
+                                                      Text="Trainer"
+                                                      Command="{Binding NavigateToTypeEffectivenessViewCommand}"
+                />
             </Grid>
         </Border>
     </Grid>

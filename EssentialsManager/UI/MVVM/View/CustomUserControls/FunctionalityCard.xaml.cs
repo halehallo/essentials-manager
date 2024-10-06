@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace UI.MVVM.View.CustomUserControls;
@@ -29,5 +30,14 @@ public partial class FunctionalityCard : UserControl
     {
         get { return (string)GetValue(TextProperty); }
         set { SetValue(TextProperty, value); }
+    }
+    
+    public static readonly DependencyProperty CommandProperty = 
+        DependencyProperty.Register("Command", typeof(ICommand), typeof(FunctionalityCard), new PropertyMetadata(null));
+
+    public ICommand Command
+    {
+        get { return (ICommand)GetValue(CommandProperty); }
+        set { SetValue(CommandProperty, value); }
     }
 }
