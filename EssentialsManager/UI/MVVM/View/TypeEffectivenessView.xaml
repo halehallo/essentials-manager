@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:UI.MVVM.View"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -58,63 +59,139 @@
                     </RectangleGeometry.Rect>
                 </RectangleGeometry>
             </Border.Clip>
-            <!-- <ListView ItemsSource="{Binding TypeImages}" -->
-            <!--           Background="Transparent" HorizontalAlignment="Center" BorderBrush="Transparent"> -->
-            <!--     <ListView.ItemTemplate> -->
-            <!--         <DataTemplate> -->
-            <!--             <Image> -->
-            <!--                 <Image.Source> -->
-            <!--                     <CroppedBitmap Source="{Binding ImagePath}" -->
-            <!--                                    SourceRect="{Binding IconSourceRect}" /> -->
-            <!--                 </Image.Source> -->
-            <!--             </Image> -->
-            <!--         </DataTemplate> -->
-            <!--     </ListView.ItemTemplate> -->
-            <!--     <ListView.ItemsPanel> -->
-            <!--         <ItemsPanelTemplate> -->
-            <!--             <UniformGrid Columns="8" HorizontalAlignment="Center" /> -->
-            <!--         </ItemsPanelTemplate> -->
-            <!--     </ListView.ItemsPanel> -->
-            <!-- </ListView> -->
 
-            <ItemsControl ItemsSource="{Binding TypeEffectivenessGrid}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Rows="1" 
-                                     Columns="{Binding AmountOfTypings}"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-    
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <ItemsControl ItemsSource="{Binding}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Rows="{Binding DataContext.AmountOfTypings, 
-                                                        RelativeSource={RelativeSource AncestorType=Window}}" 
-                                                 Columns="1"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BorderBrush="Black" BorderThickness="1" 
-                                            Width="Auto" Height="Auto">
-                                        <TextBlock Text="{Binding Text}"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"/>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="85*" />
+                    <RowDefinition Height="10*" />
+                    <RowDefinition Height="5*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="8*" />
+                    <ColumnDefinition Width="86*" />
+                    <ColumnDefinition Width="4*" />
+                </Grid.ColumnDefinitions>
 
-            
+                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           Text="Attacking" FontSize="16" Foreground="{StaticResource TextColorLight}">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="-90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+                
+                <ItemsControl Grid.Row="0" Grid.Column="1" ItemsSource="{Binding TypeImages}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="{Binding AmountOfTypings}"
+                                         Columns="1" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Viewbox Stretch="Uniform" Margin="0, 2"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                                     MaxWidth="64"
+                                     >
+                                <Image>
+                                    <Image.Source>
+                                        <CroppedBitmap Source="{Binding ImagePath}"
+                                                       SourceRect="{Binding IconSourceRect}" />
+                                    </Image.Source>
+                                </Image>
+                            </Viewbox>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl Grid.Row="0" Grid.Column="2" ItemsSource="{Binding TypeEffectivenessGrid}" x:Name="GridItemControl">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"
+                                         Columns="{Binding AmountOfTypings}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ItemsControl ItemsSource="{Binding}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid
+                                            Rows="{Binding DataContext.AmountOfTypings, 
+                                                        RelativeSource={RelativeSource AncestorType=Window}}"
+                                            Columns="1" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="Transparent" BorderThickness="1"
+                                                Background="{Binding BackgroundColor}"
+                                                Width="Auto" Height="Auto">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.TypeEffectivenessFieldCommand, ElementName=GridItemControl}" CommandParameter="{Binding}" />                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                            <TextBlock Text="{Binding Text}"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="{Binding ForegroundColor}"
+                                                       Background="Transparent"
+                                                       VerticalAlignment="Center" />
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding TypeImages}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1"
+                                         Columns="{Binding AmountOfTypings}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Viewbox Stretch="Uniform" Margin="2,0"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                                     MaxWidth="64"
+                            >
+                                <Image>
+                                    <Image.Source>
+                                        <CroppedBitmap Source="{Binding ImagePath}"
+                                                       SourceRect="{Binding IconSourceRect}" />
+                                    </Image.Source>
+                                </Image>
+                            </Viewbox>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           Text="Defending" FontSize="16" Foreground="{StaticResource TextColorLight}"/>
+
+                <Border Grid.Row="0" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center"
+                        Background="{StaticResource BackgroundColorLighter}"
+                        Name="SaveTypeEffectivenessesButton">
+                    <Border.Clip>
+                        <RectangleGeometry RadiusX="10" RadiusY="10">
+                            <RectangleGeometry.Rect>
+                                <MultiBinding Converter="{StaticResource RectConverter}">
+                                    <Binding ElementName="SaveTypeEffectivenessesButton" Path="ActualWidth" />
+                                    <Binding ElementName="SaveTypeEffectivenessesButton" Path="ActualHeight" />
+                                </MultiBinding>
+                            </RectangleGeometry.Rect>
+                        </RectangleGeometry>
+                    </Border.Clip>
+                    <Button Content="Save" BorderBrush="Transparent" Background="Transparent" Padding="20, 10"
+                            Command="{Binding SaveTypeEffectivenessesCommand}" />
+                </Border>
+            </Grid>
 
         </Border>
-
-
     </Grid>
 </UserControl>

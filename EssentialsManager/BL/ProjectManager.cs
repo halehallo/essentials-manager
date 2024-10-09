@@ -1,4 +1,5 @@
-﻿using BL.PbsManagers;
+﻿using BL.DataTransferObjects;
+using BL.PbsManagers;
 using BL.PbsManagers.Types;
 using DAL;
 using DOM.Project.Typings;
@@ -49,6 +50,11 @@ public class ProjectManager : IProjectManager
     public IEnumerable<Typing> GetAllTypingsWithFullJoins()
     {
         return _typeManager.GetAllTypesWithJoin();
+    }
+
+    public void ChangeTypeEffectiveness(ICollection<TypeEffectivenessFieldChange> changes)
+    {
+        throw new NotImplementedException();
     }
 
     public string GetProjectFolderPath()
