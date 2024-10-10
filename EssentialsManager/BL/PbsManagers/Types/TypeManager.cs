@@ -32,6 +32,11 @@ public class TypeManager : ITypeManager
         return _typingRepository.ReadAllTypingsWithFullJoin();
     }
 
+    public void UpdateType(Typing type)
+    {
+        _typingRepository.UpdateTyping(type);
+    }
+
     private void WriteAllTypesWithoutLinksToPbs(Dictionary<string, Dictionary<string, string>> blocks)
     {
         foreach (var block in blocks)

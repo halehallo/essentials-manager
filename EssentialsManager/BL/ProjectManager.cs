@@ -54,7 +54,8 @@ public class ProjectManager : IProjectManager
 
     public void ChangeTypeEffectiveness(ICollection<TypeEffectivenessFieldChange> changes)
     {
-        throw new NotImplementedException();
+        _pbsManager.SaveTypeEffectivenessChanges(changes);
+        _pbsManager.SaveTypingsToPbsFromDatabase();
     }
 
     public string GetProjectFolderPath()

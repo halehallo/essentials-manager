@@ -11,7 +11,7 @@ public class ProjectFoldersDbContext : DbContext
     
     public ProjectFoldersDbContext(DbContextOptions<ProjectFoldersDbContext> options) : base(options)
     {
-        ProjectFoldersInitializer.Initialize(this, false);
+        ProjectFoldersInitializer.Initialize(this, true);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

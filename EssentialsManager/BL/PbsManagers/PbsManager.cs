@@ -1,9 +1,11 @@
-﻿using BL.PbsManagers.Abilities;
+﻿using BL.DataTransferObjects;
+using BL.PbsManagers.Abilities;
 using BL.PbsManagers.Items;
 using BL.PbsManagers.Moves;
 using BL.PbsManagers.Pokemons;
 using BL.PbsManagers.Types;
 using DAL;
+using DOM.Project.Typings;
 
 namespace BL.PbsManagers;
 
@@ -116,6 +118,94 @@ public class PbsManager : IPbsManager
     public bool HasDataSaved()
     {
         return _typeManager.HasData();
+    }
+
+    public void SaveTypeEffectivenessChanges(ICollection<TypeEffectivenessFieldChange> changes)
+    {
+        List<Typing> typings = _typeManager.GetAllTypesWithFullJoin().OrderBy(t => t.IconPosition).ToList();
+        foreach (TypeEffectivenessFieldChange change in changes)
+        {
+            Typing attackingType = typings[change.AttackingType];
+            Typing defendingType = typings[change.DefendingType];
+
+            if (change.InitialState.Equals("Weakness"))
+            {
+                defendingType.Weaknesses = defendingType.Weaknesses.Where(weakness => !weakness.Weakness.Equals(attackingType)).ToList();
+            }else if (change.InitialState.Equals("Resistance"))
+            {
+                defendingType.Resistances = defendingType.Resistances.Where(resistance => !resistance.Resistance.Equals(attackingType)).ToList();
+            }else if (change.InitialState.Equals("Immunity"))
+            {
+                defendingType.Immunities = defendingType.Immunities.Where(immunity => !immunity.Immunity.Equals(attackingType)).ToList();
+            }
+            
+            if (change.State.Equals("Weakness"))
+            {
+                defendingType.Weaknesses.Add(new TypingWeakness()
+                {
+                    Weakness = attackingType,
+                    Typing = defendingType,
+                    KeyString = $"{defendingType.InternalName}-{attackingType.InternalName}"
+                });
+            }else if (change.State.Equals("Resistance"))
+            {
+                defendingType.Resistances.Add(new TypingResistance()
+                {
+                    Resistance = attackingType,
+                    Typing = defendingType,
+                    KeyString = $"{defendingType.InternalName}-{attackingType.InternalName}"
+                });
+            }else if (change.State.Equals("Immunity"))
+            {
+                defendingType.Immunities.Add(new TypingImmunities()
+                {
+                    Immunity = attackingType,
+                    Typing = defendingType,
+                    KeyString = $"{defendingType.InternalName}-{attackingType.InternalName}"
+                });
+            }
+            _typeManager.UpdateType(defendingType);
+        }
+    }
+
+    public void SaveTypingsToPbsFromDatabase()
+    {
+        string filePath = FolderPath + "\\PBS\\types_test.txt";
+        List<Typing> typings = _typeManager.GetAllTypesWithFullJoin().OrderBy(t => t.IconPosition).ToList();
+        
+        List<string> lines = new List<string>();
+        
+        lines.Add("# See the documentation on the wiki to learn how to edit this file.");
+        lines.Add("#------------------------------- ");
+        
+        foreach (Typing typing in typings)
+        {
+            lines.Add($"[{typing.InternalName}]");
+            lines.Add($"Name = {typing.Name}");
+            lines.Add($"IconPosition = {typing.IconPosition}");
+            
+            if (typing.IsSpecialType)
+                lines.Add("IsSpecialType = true");
+            
+            if (typing.IsPseudoType)
+                lines.Add("IsPseudoType = true");
+            
+            // if necessary, add flags
+            // have not seen it used though
+            
+            if (typing.Weaknesses.Count > 0)
+                lines.Add($"Weaknesses = {string.Join(",", typing.Weaknesses.Select(w => w.Weakness.InternalName))}");
+
+            if (typing.Resistances.Count > 0)
+                lines.Add($"Resistances = {string.Join(",", typing.Resistances.Select(r => r.Resistance.InternalName))}");
+
+            if (typing.Immunities.Count > 0)
+                lines.Add($"Immunities = {string.Join(",", typing.Immunities.Select(i => i.Immunity.InternalName))}");
+
+            lines.Add("#-------------------------------");
+        }
+
+        File.WriteAllLines(filePath, lines);
     }
 
     private void LoadTypes()
