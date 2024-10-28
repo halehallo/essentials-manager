@@ -31,11 +31,11 @@ public class FunctionalityOverviewViewModel : Core.ViewModel
         _typeEffectivenessViewModel = typeEffectivenessViewModel;
         
         Navigation = navigationService;
-        NavigateToProjectPickerCommand = new RelayCommand(param => NavigateToProjectFunctionality(), o => true);
+        NavigateToProjectPickerCommand = new RelayCommand(param => NavigateToProjectPicker(), o => true);
         NavigateToTypeEffectivenessViewCommand = new RelayCommand(param => NavigateToTypeEffectivenessView(), o => true);
     }
 
-    private void NavigateToProjectFunctionality()
+    private void NavigateToProjectPicker()
     {
         _projectManager.ResetConnectionString();
         Navigation.NavigateTo<ProjectsPickerViewModel>();

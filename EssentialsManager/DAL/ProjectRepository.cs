@@ -23,6 +23,12 @@ public class ProjectRepository : IProjectRepository
     {
         try
         {
+            // Clear all tracked entities to avoid conflicts with the new database context
+            foreach (var entry in _context.ChangeTracker.Entries().ToList())
+            {
+                entry.State = EntityState.Detached;
+            }
+            
             //new context so the database initializes in case of no file
             _context.Database.CloseConnection();
             ProjectDbContext disposableDbContext = ProjectDbContextFactory.CreateDbContext(connectionString);

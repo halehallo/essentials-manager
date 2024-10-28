@@ -43,7 +43,7 @@
                     </RectangleGeometry>
                 </Border.Clip>
                 <Button Content="Functionality" BorderBrush="Transparent" Background="Transparent" Padding="20, 10"
-                        Command="{Binding NavigateToProjectPickerCommand}" />
+                        Command="{Binding NavigateToProjectFunctionalityCommand}" />
             </Border>
         </StackPanel>
         <Border Grid.Row="1"

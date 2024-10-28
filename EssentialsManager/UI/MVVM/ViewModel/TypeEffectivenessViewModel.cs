@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -9,6 +10,7 @@ using DOM.Project.Typings;
 using UI.Core;
 using UI.MVVM.Model;
 using UI.MVVM.Model.Type;
+using UI.Services;
 
 namespace UI.MVVM.ViewModel;
 
@@ -16,6 +18,17 @@ public class TypeEffectivenessViewModel : Core.ViewModel
 {
     private IProjectManager _projectManager;
     
+    private INavigationService _navigation;
+
+    public INavigationService Navigation
+    {
+        get => _navigation;
+        set
+        {
+            _navigation = value;
+            OnPropertyChanged();
+        }
+    }
     public BitmapImage TypeIconsImage;
     private ObservableCollection<ObservableCollection<TypeEffectivenessField>> _typeEffectivenessGrid;
     public ObservableCollection<TypeImage> TypeImages {get; set;}
@@ -24,6 +37,9 @@ public class TypeEffectivenessViewModel : Core.ViewModel
     public int AmountOfTypings {get; set;}
     public RelayCommand TypeEffectivenessFieldCommand { get; set; }
     public RelayCommand SaveTypeEffectivenessesCommand { get; set; }
+    public RelayCommand NavigateToProjectFunctionalityCommand { get; set; }
+    public RelayCommand NavigateToProjectPickerCommand { get; set; }
+
     public ObservableCollection<ObservableCollection<TypeEffectivenessField>> TypeEffectivenessGrid
     {
         get => _typeEffectivenessGrid;
@@ -35,9 +51,10 @@ public class TypeEffectivenessViewModel : Core.ViewModel
         }
     }
 
-    public TypeEffectivenessViewModel(IProjectManager projectManager)
+    public TypeEffectivenessViewModel(IProjectManager projectManager, INavigationService navigationService)
     {
         _projectManager = projectManager;
+        Navigation = navigationService;
         fieldStates = new TypeEffectivenessField[4];
         fieldStates[0] = new TypeEffectivenessField()
         {
@@ -69,6 +86,14 @@ public class TypeEffectivenessViewModel : Core.ViewModel
         };
         TypeEffectivenessFieldCommand = new RelayCommand(ChangeTypeEffectivenessFieldState, o => true);
         SaveTypeEffectivenessesCommand = new RelayCommand(o => SaveTypeEffectivenessGrid(), o => true);
+        NavigateToProjectFunctionalityCommand = new RelayCommand(t => Navigation.NavigateTo<FunctionalityOverviewViewModel>(), o => true);
+        NavigateToProjectPickerCommand = new RelayCommand(param => NavigateToProjectPicker(), o => true);
+    }
+    
+    private void NavigateToProjectPicker()
+    {
+        _projectManager.ResetConnectionString();
+        Navigation.NavigateTo<ProjectsPickerViewModel>();
     }
 
     public void ReadTypeImages()
@@ -80,6 +105,12 @@ public class TypeEffectivenessViewModel : Core.ViewModel
         var typingList = typings.ToList();
         AmountOfTypings = typingList.Count();
         string imagePath = _projectManager.GetProjectFolderPath() + "\\Graphics\\UI\\types.png" ;
+        
+        if (!File.Exists(imagePath))
+        {
+            imagePath = _projectManager.GetProjectFolderPath() + "\\Graphics\\Pictures\\Pokedex\\icon_types.png";
+        }
+        
         TypeIconsImage = new BitmapImage(new Uri(imagePath));
         int imageHeight = TypeIconsImage.PixelHeight;
         int imageWidth = TypeIconsImage.PixelWidth;
