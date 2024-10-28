@@ -2,5 +2,6 @@
 
 public interface IPokemonManager
 {
-    void ReadAllPokemonFromPbs(Dictionary<string, Dictionary<string, string>> blocks);
+    void WriteAllPokemonWithoutLinksToPbs(Dictionary<string, Dictionary<string, string>> blocks);
+    void LinkAllPokemonInDatabase();
 }

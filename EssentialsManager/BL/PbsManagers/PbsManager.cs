@@ -248,10 +248,18 @@ public class PbsManager : IPbsManager
     
     private void LoadPokemon()
     {
-        string filePath = FolderPath + "\\PBS\\pokemon.txt";
+        string filePathBase = FolderPath + "\\PBS\\pokemon.txt";
 
-        Dictionary<string, Dictionary<string, string>> blocks = ReadBlocks(filePath);
+        Dictionary<string, Dictionary<string, string>> blocksBase = ReadBlocks(filePathBase);
         
-        _pokemonManager.ReadAllPokemonFromPbs(blocks);
+        string filePathForms = FolderPath + "\\PBS\\pokemon_forms.txt";
+
+        Dictionary<string, Dictionary<string, string>> blocksForms = ReadBlocks(filePathForms);
+        
+        _pokemonManager.WriteAllPokemonWithoutLinksToPbs(blocksBase);
+        _pokemonManager.WriteAllPokemonWithoutLinksToPbs(blocksForms);
+        _pokemonManager.LinkAllPokemonInDatabase();
     }
+    
+   
 }

@@ -89,7 +89,52 @@ public class PokemonRepository : IPokemonRepository
 
     public Pokemon ReadPokemonByInternalName(string internalName)
     {
-        return _context.Pokemons.Find(internalName);
+        return _context.Pokemons.First(pokemon => pokemon.InternalName == internalName);
+    }
+
+    public ICollection<PokemonGenderRatio> ReadAllGenderRatios()
+    {
+        return _context.PokemonGenderRatios.ToList();
+    }
+    
+    public ICollection<PokemonGrowthRate> ReadAllGrowthRates()
+    {
+        return _context.PokemonGrowthRates.ToList();
+    }
+    
+    public ICollection<PokemonEvGained> ReadAllEvsGained()
+    {
+        return _context.PokemonEvGained.ToList();
+    }
+
+    public ICollection<PokemonEggGroup> ReadAllEggGroups()
+    {
+        return _context.PokemonEggGroups.ToList();
+    }
+
+    public ICollection<PokemonColor> ReadAllColors()
+    {
+        return _context.PokemonColors.ToList();
+    }
+
+    public ICollection<PokemonShape> ReadAllShapes()
+    {
+        return _context.PokemonShapes.ToList();
+    }
+
+    public ICollection<PokemonHabitat> ReadAllHabitats()
+    {
+        return _context.PokemonHabitats.ToList();
+    }
+
+    public ICollection<PokemonFlag> ReadAllFlags()
+    {
+        return _context.PokemonFlags.ToList();
+    }
+
+    public ICollection<PokemonEvolutionMethod> ReadAllEvolutionMethods()
+    {
+        return _context.PokemonEvolutionMethods.ToList();
     }
 
     public void SaveChanges()

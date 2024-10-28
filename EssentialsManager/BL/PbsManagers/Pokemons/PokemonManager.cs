@@ -29,31 +29,56 @@ public class PokemonManager : IPokemonManager
         _pokemonRepository = pokemonRepository;
     }
 
-    public void ReadAllPokemonFromPbs(Dictionary<string, Dictionary<string, string>> blocks)
-    {
-        WriteAllTypesWithoutLinksToPbs(blocks);
-        LinkAllTypesInDatabase();
-    }
-
-    private void WriteAllTypesWithoutLinksToPbs(Dictionary<string, Dictionary<string, string>> blocks)
+    public void WriteAllPokemonWithoutLinksToPbs(Dictionary<string, Dictionary<string, string>> blocks)
     {
         ICollection<Typing> typingsFromRepo = _typingRepository.ReadAllTypings();
         var typingDictionary = typingsFromRepo.ToDictionary(t => t.InternalName, t => t);
-        Dictionary<string, PokemonGenderRatio> pokemonGenderRatiosDictionary =
-            new Dictionary<string, PokemonGenderRatio>(8);
-        Dictionary<string, PokemonGrowthRate> pokemonGrowthRatesDictionary =
-            new Dictionary<string, PokemonGrowthRate>(6);
-        Dictionary<string, PokemonEvGained> pokemonEvsGainedDictionary = new Dictionary<string, PokemonEvGained>(18);
-        Dictionary<string, PokemonEggGroup> pokemonEggGroupsDictionary = new Dictionary<string, PokemonEggGroup>(15);
-        Dictionary<string, PokemonColor> pokemonColorsDictionary = new Dictionary<string, PokemonColor>(10);
-        Dictionary<string, PokemonShape> pokemonShapesDictionary = new Dictionary<string, PokemonShape>(14);
-        Dictionary<string, PokemonHabitat> pokemonHabitatsDictionary = new Dictionary<string, PokemonHabitat>(10);
-        Dictionary<string, PokemonFlag> pokemonFlagsDictionary = new Dictionary<string, PokemonFlag>(9);
-        Dictionary<string, PokemonEvolutionMethod> pokemonEvolutionMethodsDictionary = new Dictionary<string, PokemonEvolutionMethod>(33);
+        
+        ICollection<PokemonGenderRatio> genderRatiosFromRepo = _pokemonRepository.ReadAllGenderRatios();
+        Dictionary<string, PokemonGenderRatio> pokemonGenderRatiosDictionary = 
+            genderRatiosFromRepo.ToDictionary(p => p.GenderRatioName, p => p);
+        
+        ICollection<PokemonGrowthRate> growthRateFromRepo = _pokemonRepository.ReadAllGrowthRates();
+        Dictionary<string, PokemonGrowthRate> pokemonGrowthRatesDictionary = 
+            growthRateFromRepo.ToDictionary(p => p.GrowthRateName, p => p);
+        
+        ICollection<PokemonEvGained> evsGainedFromRepo = _pokemonRepository.ReadAllEvsGained();
+        Dictionary<string, PokemonEvGained> pokemonEvsGainedDictionary = 
+            evsGainedFromRepo.ToDictionary(e => e.EvGainedName, e => e);
+
+        ICollection<PokemonEggGroup> eggGroupsFromRepo = _pokemonRepository.ReadAllEggGroups();
+        Dictionary<string, PokemonEggGroup> pokemonEggGroupsDictionary = 
+            eggGroupsFromRepo.ToDictionary(g => g.EggGroupName, g => g);
+
+        ICollection<PokemonColor> colorsFromRepo = _pokemonRepository.ReadAllColors();
+        Dictionary<string, PokemonColor> pokemonColorsDictionary = 
+            colorsFromRepo.ToDictionary(c => c.ColorName, c => c);
+
+        ICollection<PokemonShape> shapesFromRepo = _pokemonRepository.ReadAllShapes();
+        Dictionary<string, PokemonShape> pokemonShapesDictionary = 
+            shapesFromRepo.ToDictionary(s => s.ShapeName, s => s);
+
+        ICollection<PokemonHabitat> habitatsFromRepo = _pokemonRepository.ReadAllHabitats();
+        Dictionary<string, PokemonHabitat> pokemonHabitatsDictionary = 
+            habitatsFromRepo.ToDictionary(h => h.HabitatName, h => h);
+
+        ICollection<PokemonFlag> flagsFromRepo = _pokemonRepository.ReadAllFlags();
+        Dictionary<string, PokemonFlag> pokemonFlagsDictionary = 
+            flagsFromRepo.ToDictionary(f => f.FlagName, f => f);
+
+        ICollection<PokemonEvolutionMethod> evolutionMethodsFromRepo = _pokemonRepository.ReadAllEvolutionMethods();
+        Dictionary<string, PokemonEvolutionMethod> pokemonEvolutionMethodsDictionary = 
+            evolutionMethodsFromRepo.ToDictionary(em => em.MethodName, em => em);
 
 
         foreach (var block in blocks)
         {
+            string[] parts = block.Key.Split(',');
+
+            string internalName = parts[0];
+            string formNumber = parts.Length > 1 ? parts[1] : "0";
+            bool isBaseForm = formNumber == "0";
+            
             block.Value.TryGetValue("Name", out string name);
 
             block.Value.TryGetValue("FormName", out string formName);
@@ -91,7 +116,7 @@ public class PokemonManager : IPokemonManager
             }
 
             block.Value.TryGetValue("GenderRatio", out string genderRatioString);
-            genderRatioString ??= "Female50Percent";
+            genderRatioString ??= (isBaseForm) ? "Female50Percent" : "BaseFormReference";
 
             pokemonGenderRatiosDictionary.TryGetValue(genderRatioString, out PokemonGenderRatio genderRatio);
             if (genderRatio == null)
@@ -105,7 +130,7 @@ public class PokemonManager : IPokemonManager
             }
 
             block.Value.TryGetValue("GrowthRate", out string growthRateString);
-            growthRateString ??= "Medium";
+            growthRateString ??= (isBaseForm) ? "Medium" : "BaseFormReference";
 
             pokemonGrowthRatesDictionary.TryGetValue(growthRateString, out PokemonGrowthRate growthRate);
             if (growthRate == null)
@@ -119,6 +144,7 @@ public class PokemonManager : IPokemonManager
             }
 
             block.Value.TryGetValue("BaseExp", out string baseExp);
+            baseExp ??= (isBaseForm) ? "100" : "-1";
 
             block.Value.TryGetValue("EVs", out string evsString);
             List<string> evsStrings = evsString != null ? evsString.Split(',').ToList() : [];
@@ -149,10 +175,10 @@ public class PokemonManager : IPokemonManager
             }
 
             block.Value.TryGetValue("CatchRate", out string catchRate);
-            catchRate ??= "255";
+            catchRate ??= (isBaseForm) ? "255" : "-1";
 
             block.Value.TryGetValue("Happiness", out string happiness);
-            happiness ??= "70";
+            happiness ??= (isBaseForm) ? "70" : "-1";
 
             block.Value.TryGetValue("Abilities", out string abilitiesString);
             List<string> abilitiesStrings = abilitiesString != null ? abilitiesString.Split(',').ToList() : [];
@@ -216,7 +242,7 @@ public class PokemonManager : IPokemonManager
             }
             
             block.Value.TryGetValue("EggGroups", out string eggGroupsString);
-            eggGroupsString ??= "Undiscovered";
+            eggGroupsString ??= (isBaseForm) ? "Undiscovered" : "BaseFormReference";
             List<string> eggGroupsStrings = eggGroupsString != null ? eggGroupsString.Split(',').ToList() : [];
             ICollection<PokemonEggGroup> eggGroups = new List<PokemonEggGroup>();
             
@@ -236,7 +262,7 @@ public class PokemonManager : IPokemonManager
             }
             
             block.Value.TryGetValue("HatchSteps", out string hatchSteps);
-            hatchSteps ??= "1";
+            hatchSteps ??= (isBaseForm) ? "1" : "-1";
             
             block.Value.TryGetValue("Incense", out string incenseString);
             Item incense = null;
@@ -249,13 +275,13 @@ public class PokemonManager : IPokemonManager
             List<string> offspringStrings = offspringString != null ? offspringString.Split(',').ToList() : [];
             
             block.Value.TryGetValue("Height", out string height);
-            height ??= "0.1";
+            height ??= (isBaseForm) ? "0.1" : "-1";
             
             block.Value.TryGetValue("Weight", out string weight);
-            weight ??= "0.1";
+            weight ??= (isBaseForm) ? "0.1" : "-1";
             
             block.Value.TryGetValue("Color", out string colorString);
-            colorString ??= "Red";
+            colorString ??= (isBaseForm) ? "Red" : "BaseFormReference";
 
             pokemonColorsDictionary.TryGetValue(colorString, out PokemonColor color);
             if (color == null)
@@ -269,7 +295,7 @@ public class PokemonManager : IPokemonManager
             }
             
             block.Value.TryGetValue("Shape", out string shapeString);
-            shapeString ??= "Head";
+            shapeString ??= (isBaseForm) ? "Head" : "BaseFormReference";
 
             pokemonShapesDictionary.TryGetValue(shapeString, out PokemonShape shape);
             if (shape == null)
@@ -283,7 +309,7 @@ public class PokemonManager : IPokemonManager
             }
             
             block.Value.TryGetValue("Habitat", out string habitatString);
-            habitatString ??= "None";
+            habitatString ??= (isBaseForm) ? "None" : "BaseFormReference";
 
             pokemonHabitatsDictionary.TryGetValue(habitatString, out PokemonHabitat habitat);
             if (habitat == null)
@@ -297,16 +323,16 @@ public class PokemonManager : IPokemonManager
             }
             
             block.Value.TryGetValue("Category", out string category);
-            category ??= "???";
+            category ??= (isBaseForm) ? "???" : "BaseFormReference";
             
             block.Value.TryGetValue("Pokedex", out string pokedex);
-            pokedex ??= "???";
+            pokedex ??= (isBaseForm) ? "???" : "BaseFormReference";
             
             block.Value.TryGetValue("Generation", out string generation);
-            generation ??= "0";
+            generation ??= (isBaseForm) ? "0" : "-1";
             
             block.Value.TryGetValue("Flags", out string flagsString);
-            flagsString ??= "None";
+            flagsString ??= (isBaseForm) ? "None" : "BaseFormReference";
             List<string> flagsStrings = flagsString != null ? flagsString.Split(',').ToList() : [];
             List<PokemonFlag> flags = new List<PokemonFlag>();
 
@@ -370,7 +396,7 @@ public class PokemonManager : IPokemonManager
                     
                     PokemonEvolution evolution = new PokemonEvolution()
                     {
-                        PokemonBeforeString = block.Key,
+                        PokemonBeforeString = internalName,
                         PokemonAfterString = evolutionsStrings[i],
                         PokemonEvolutionMethod = evolutionMethod,
                         Parameter = evolutionsStrings[i+2]
@@ -379,12 +405,34 @@ public class PokemonManager : IPokemonManager
                     evolutions.Add(evolution);
                 }
             }
+            
+            block.Value.TryGetValue("MegaStone", out string megaStoneString);
+            Item megaStone = null;
+            if (megaStoneString != null)
+            {
+                megaStone = _itemRepository.ReadItemByItemName(megaStoneString);
+            }
+            
+            block.Value.TryGetValue("UnmegaForm", out string unmegaForm);
+            unmegaForm ??= "-1";
+            
+            block.Value.TryGetValue("MegaMove", out string megaMoveString);
+            Move megaMove = null;
+            if (megaMoveString != null)
+            {
+                megaMove = _moveRepository.ReadMoveByInternalName(megaMoveString);
+            }
+            
+            block.Value.TryGetValue("MegaMessage", out string megaMessage);
+            megaMessage ??= "-1";
 
             Pokemon pokemon = new Pokemon()
             {
-                InternalName = block.Key,
+                KeyName = internalName + "_" + formNumber,
+                InternalName = internalName,
                 Name = name,
                 FormName = formName,
+                FormNumber = int.Parse(formNumber),
                 Typings = typings,
                 Hp = int.Parse(hp),
                 Attack = int.Parse(attack),
@@ -419,7 +467,11 @@ public class PokemonManager : IPokemonManager
                 WildItemCommon = wildItemCommon,
                 WildItemUncommon = wildItemUncommon,
                 WildItemRare = wildItemRare,
-                Evolutions = evolutions
+                Evolutions = evolutions,
+                MegaStone = megaStone,
+                UnmegaForm = int.Parse(unmegaForm),
+                MegaMove = megaMove,
+                MegaMessage = int.Parse(megaMessage),
             };
             
             _pokemonRepository.CreatePokemon(pokemon);
@@ -432,7 +484,7 @@ public class PokemonManager : IPokemonManager
         _pokemonRepository.SaveChanges();
     }
 
-    private void LinkAllTypesInDatabase()
+    public void LinkAllPokemonInDatabase()
     {
         IEnumerable<Pokemon> pokemons = _pokemonRepository.ReadAllPokemonsWithEvolutionAndOffspring();
         foreach (var pokemon in pokemons)

@@ -9,7 +9,9 @@ namespace DOM.Project.Pokemons;
 public class Pokemon
 {
     [Key]
+    public string KeyName {get; set;}
     public string InternalName { get; set; }
+    public int FormNumber { get; set; }
     public string Name { get; set; }
     public string FormName { get; set; }
     public IEnumerable<Typing> Typings { get; set; }
@@ -48,6 +50,10 @@ public class Pokemon
     public Item WildItemUncommon { get; set; }
     public Item WildItemRare  { get; set; }
     public ICollection<PokemonEvolution> Evolutions { get; set; }
+    public Item MegaStone { get; set; }
+    public int UnmegaForm { get; set; }
+    public Move MegaMove {get; set;}
+    public int MegaMessage { get; set; }
 
     //navigation prop
     public ICollection<Pokemon> Parents { get; set; }
