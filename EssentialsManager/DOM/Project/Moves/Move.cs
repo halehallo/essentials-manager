@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DOM.Project.Pokemons;
 using DOM.Project.Typings;
 
 namespace DOM.Project.Moves;
@@ -20,4 +21,8 @@ public class Move
     public IEnumerable<MoveFlag> Flags { get; set; }
     public int EffectChance { get; set; }
     public string Description { get; set; }
+    
+    //navigation prop
+    public IEnumerable<Pokemon> pokemonsWithEggMove;
+    public IEnumerable<Pokemon> pokemonsWithTutorMove;
 }
