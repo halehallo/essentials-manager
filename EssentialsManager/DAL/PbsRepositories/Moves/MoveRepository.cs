@@ -15,7 +15,6 @@ public class MoveRepository : IMoveRepository
     public void CreateMove(Move move)
     {
         _context.Moves.Add(move);
-        // _context.SaveChanges();
     }
 
     public Move ReadMoveByInternalName(string name)
@@ -26,35 +25,31 @@ public class MoveRepository : IMoveRepository
     public void CreateCategory(MoveCategory moveCategory)
     {
         _context.MoveCategories.Add(moveCategory);
-        // _context.SaveChanges();
     }
 
     public void CreateMoveFunctionCode(MoveFunctionCode moveFunctionCode)
     {
         _context.MoveFunctionCodes.Add(moveFunctionCode);
-        // _context.SaveChanges();
     }
 
     public void CreateMoveTarget(MoveTarget moveTarget)
     {
         _context.MoveTargets.Add(moveTarget);
-        // _context.SaveChanges();
     }
 
     public void CreateMoveFlag(MoveFlag moveFlag)
     {
         _context.MoveFlags.Add(moveFlag);
-        // _context.SaveChanges();
     }
 
     public void CreateLearnedMove(LearnedMove learnedMove)
     {
         _context.LearnedMoves.Add(learnedMove);
-        // _context.SaveChanges();
     }
 
     public void SaveChanges()
     {
         _context.SaveChanges();
+        _context.ChangeTracker.Clear();
     }
 }

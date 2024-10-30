@@ -15,7 +15,6 @@ public class ItemRepository : IItemRepository
     public void CreateItem(Item item)
     {
         _context.Items.Add(item);
-        // _context.SaveChanges();
     }
 
     public Item ReadItemByItemName(string itemName)
@@ -26,23 +25,21 @@ public class ItemRepository : IItemRepository
     public void CreateItemBattleUse(ItemBattleUse itemBattleUse)
     {
         _context.ItemBattleUses.Add(itemBattleUse);
-        // _context.SaveChanges();
     }
 
     public void CreateItemFieldUse(ItemFieldUse itemFieldUse)
     {
         _context.ItemFieldUses.Add(itemFieldUse);
-        // _context.SaveChanges();
     }
 
     public void CreateItemFlag(ItemFlag itemFlag)
     {
         _context.ItemFlags.Add(itemFlag);
-        // _context.SaveChanges();
     }
 
     public void SaveChanges()
     {
         _context.SaveChanges();
+        _context.ChangeTracker.Clear();
     }
 }

@@ -16,67 +16,56 @@ public class PokemonRepository : IPokemonRepository
     public void CreatePokemon(Pokemon pokemon)
     {
         _context.Pokemons.Add(pokemon);
-        // _context.SaveChanges();
     }
 
     public void CreatePokemonColor(PokemonColor pokemonColor)
     {
         _context.PokemonColors.Add(pokemonColor);
-        // _context.SaveChanges();
     }
 
     public void CreatePokemonEggGroup(PokemonEggGroup pokemonEggGroup)
     {
         _context.PokemonEggGroups.Add(pokemonEggGroup);
-        // _context.SaveChanges();
     }
 
     public void CreatePokemonEvolution(PokemonEvolution pokemonEvolution)
     {
         _context.PokemonEvolutions.Add(pokemonEvolution);
-        // _context.SaveChanges();
     }
 
     public void CreatePokemonEvolutionMethod(PokemonEvolutionMethod pokemonEvolutionMethod)
     {
         _context.PokemonEvolutionMethods.Add(pokemonEvolutionMethod);
-        // _context.SaveChanges();
     }
 
     public void CreatePokemonFlag(PokemonFlag pokemonFlag)
     {
         _context.PokemonFlags.Add(pokemonFlag);
-        // _context.SaveChanges();
     }
 
     public void CreatePokemonGenderRatio(PokemonGenderRatio pokemonGenderRatio)
     {
         _context.PokemonGenderRatios.Add(pokemonGenderRatio);
-        // _context.SaveChanges();
     }
 
     public void CreatePokemonGrowthRate(PokemonGrowthRate pokemonGrowthRate)
     {
         _context.PokemonGrowthRates.Add(pokemonGrowthRate);
-        // _context.SaveChanges();
     }
 
     public void CreatePokemonHabitat(PokemonHabitat pokemonHabitat)
     {
         _context.PokemonHabitats.Add(pokemonHabitat);
-        // _context.SaveChanges();
     }
 
     public void CreatePokemonShape(PokemonShape pokemonShape)
     {
         _context.PokemonShapes.Add(pokemonShape);
-        // _context.SaveChanges();
     }
 
     public void CreateEvGained(PokemonEvGained pokemonEvGained)
     {
         _context.PokemonEvGained.Add(pokemonEvGained);
-        // _context.SaveChanges();
     }
 
     public IEnumerable<Pokemon> ReadAllPokemonsWithEvolutionAndOffspring()
@@ -140,5 +129,6 @@ public class PokemonRepository : IPokemonRepository
     public void SaveChanges()
     {
         _context.SaveChanges();
+        _context.ChangeTracker.Clear();
     }
 }

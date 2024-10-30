@@ -65,14 +65,5 @@ public class TypingRepository : ITypingRepository
         return _context.Types.Any();
     }
 
-    public void CreateTypingWeakness(TypingWeakness weakness)
-    {
-        _context.TypeWeaknesses.Add(weakness);
-        _context.SaveChanges();
-    }
-    public void CreateTypingWeaknessesBatch(IEnumerable<TypingWeakness> typingWeaknesses)
-    {
-        _context.TypeWeaknesses.AddRange(typingWeaknesses);
-        _context.SaveChanges();
-    }
+    
 }

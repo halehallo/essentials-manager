@@ -11,6 +11,5 @@ public interface ITypingRepository
     IEnumerable<Typing> ReadAllTypingsWithJoin();
     IEnumerable<Typing> ReadAllTypingsWithFullJoin();
     bool HasAnyTyping();
-    void CreateTypingWeakness(TypingWeakness weakness);
-    void CreateTypingWeaknessesBatch(IEnumerable<TypingWeakness> typingWeaknesses);
+    
 }
