@@ -60,6 +60,11 @@ public class TypingRepository : ITypingRepository
             .ToList();
     }
 
+    public int ReadAmountOfTypings()
+    {
+        return _context.Types.Count();
+    }
+
     public bool HasAnyTyping()
     {
         return _context.Types.Any();

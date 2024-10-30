@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DOM.Project.Pokemons;
 
 namespace DOM.Project.Typings;
 
@@ -16,6 +17,9 @@ public class Typing
     public ICollection<TypingResistance> Resistances { get; set; }
     public ICollection<string> ImmunitiesStrings { get; set; }
     public ICollection<TypingImmunities> Immunities { get; set; }
+    
+    // navigation
+    public IEnumerable<Pokemon> PokemonsWithTyping { get; set; }
 
     public Typing(string internalName, string name, int iconPosition, bool isPseudoType, bool isSpecialType, ICollection<string> weaknessesStrings, ICollection<string> resistancesStrings, ICollection<string> immunitiesStrings)
     {

@@ -28,7 +28,7 @@
         </Border.Clip>
         <TextBlock Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"
-                   FontSize="18"
+                   FontSize="30"
                    Foreground="{StaticResource TextColorDark}"/>
     </Border>
 </UserControl>

@@ -13,4 +13,8 @@
     <DataTemplate DataType="{x:Type viewModel:TypeEffectivenessViewModel}">
         <view:TypeEffectivenessView/>
     </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type viewModel:PokemonOverviewViewModel}">
+        <view:PokemonOverview/>
+    </DataTemplate>
 </ResourceDictionary>

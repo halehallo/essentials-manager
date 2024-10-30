@@ -82,7 +82,7 @@
                 <customUserControls:FunctionalityCard Grid.Column="0" Grid.Row="2" 
                                                       BackgroundColor="#1abc9c" 
                                                       Text="Pokémon"
-                                                      Command="{Binding NavigateToTypeEffectivenessViewCommand}"
+                                                      Command="{Binding NavigateToPokemonOverviewCommand}"
                 />
                 
                 <customUserControls:FunctionalityCard Grid.Column="1" Grid.Row="2" 

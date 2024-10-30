@@ -8,5 +8,6 @@ public interface ITypeManager
     bool HasData();
     IEnumerable<Typing> GetAllTypesWithJoin();
     IEnumerable<Typing> GetAllTypesWithFullJoin();
+    int getAmountOfTypings();
     void UpdateType(Typing type);
 }

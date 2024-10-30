@@ -32,6 +32,11 @@ public class TypeManager : ITypeManager
         return _typingRepository.ReadAllTypingsWithFullJoin();
     }
 
+    public int getAmountOfTypings()
+    {
+        return _typingRepository.ReadAmountOfTypings();
+    }
+
     public void UpdateType(Typing type)
     {
         _typingRepository.UpdateTyping(type);

@@ -1,7 +1,9 @@
 ﻿using BL.DataTransferObjects;
 using BL.PbsManagers;
+using BL.PbsManagers.Pokemons;
 using BL.PbsManagers.Types;
 using DAL;
+using DOM.Project.Pokemons;
 using DOM.Project.Typings;
 using DOM.ProjectFolders;
 
@@ -12,14 +14,17 @@ public class ProjectManager : IProjectManager
     private readonly IProjectRepository _repository;
     private readonly IPbsManager _pbsManager;
     private readonly ITypeManager _typeManager;
+    private readonly IPokemonManager _pokemonManager;
     public string Folderpath { get; set; }
     
 
-    public ProjectManager(IProjectRepository repository, IPbsManager pbsManager, ITypeManager typeManager)
+    public ProjectManager(IProjectRepository repository, IPbsManager pbsManager,
+        ITypeManager typeManager, IPokemonManager pokemonManager)
     {
         _repository = repository;
         _pbsManager = pbsManager;
         _typeManager = typeManager;
+        _pokemonManager = pokemonManager;
     }
 
     public bool ChangeConnectionString(string newFolderpath)
@@ -50,6 +55,16 @@ public class ProjectManager : IProjectManager
     public IEnumerable<Typing> GetAllTypingsWithFullJoins()
     {
         return _typeManager.GetAllTypesWithJoin();
+    }
+
+    public IEnumerable<Pokemon> GetAllPokemonsWithTypings()
+    {
+        return _pokemonManager.GetAllPokemonWithTypings();
+    }
+
+    public int getAmountOfTypings()
+    {
+        return _typeManager.getAmountOfTypings();
     }
 
     public void ChangeTypeEffectiveness(ICollection<TypeEffectivenessFieldChange> changes)

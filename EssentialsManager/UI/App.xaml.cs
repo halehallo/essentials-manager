@@ -64,7 +64,7 @@ public partial class App : Application
         services.AddScoped<IItemManager, ItemManager>();
         services.AddScoped<IPokemonManager, PokemonManager>();
         services.AddScoped<IFileManager, FileManager>();
-        //
+        
         // Add scoped services frontend
         services.AddSingleton<MainWindow>(serviceProvider => new MainWindow()
         {
@@ -75,9 +75,11 @@ public partial class App : Application
         services.AddSingleton<ProjectsPickerViewModel>();
         services.AddSingleton<FunctionalityOverviewViewModel>();
         services.AddSingleton<TypeEffectivenessViewModel>();
+        services.AddSingleton<PokemonOverviewViewModel>();
         services.AddSingleton<Func<Type, ViewModel>>(serviceProvider => viewModelType => (ViewModel)serviceProvider.GetService(viewModelType));
         
         services.AddSingleton<RectConverter>();
+        services.AddSingleton<ImageSourceConverter>();
         
         services.AddLogging(configure =>
         {

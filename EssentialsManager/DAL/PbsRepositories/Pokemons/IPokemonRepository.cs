@@ -16,6 +16,7 @@ public interface IPokemonRepository
     void CreatePokemonShape(PokemonShape pokemonShape);
     void CreateEvGained(PokemonEvGained pokemonEvGained);
     IEnumerable<Pokemon> ReadAllPokemonsWithEvolutionAndOffspring();
+    IEnumerable<Pokemon> ReadAllPokemonsWithTypings();
     Pokemon ReadPokemonByInternalName(string internalName);
     ICollection<PokemonGenderRatio> ReadAllGenderRatios();
     ICollection<PokemonGrowthRate> ReadAllGrowthRates();
@@ -26,6 +27,7 @@ public interface IPokemonRepository
     ICollection<PokemonHabitat> ReadAllHabitats();
     ICollection<PokemonFlag> ReadAllFlags();
     ICollection<PokemonEvolutionMethod> ReadAllEvolutionMethods();
+    int ReadAmountOfPokemon();
 
     void SaveChanges();
 }

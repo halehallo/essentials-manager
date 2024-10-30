@@ -76,6 +76,13 @@ public class PokemonRepository : IPokemonRepository
             .ToList();
     }
 
+    public IEnumerable<Pokemon> ReadAllPokemonsWithTypings()
+    {
+        return _context.Pokemons
+            .Include(p => p.Typings)
+            .AsEnumerable();
+    }
+
     public Pokemon ReadPokemonByInternalName(string internalName)
     {
         return _context.Pokemons.First(pokemon => pokemon.InternalName == internalName);
@@ -124,6 +131,11 @@ public class PokemonRepository : IPokemonRepository
     public ICollection<PokemonEvolutionMethod> ReadAllEvolutionMethods()
     {
         return _context.PokemonEvolutionMethods.ToList();
+    }
+
+    public int ReadAmountOfPokemon()
+    {
+        return _context.Pokemons.Count();
     }
 
     public void SaveChanges()

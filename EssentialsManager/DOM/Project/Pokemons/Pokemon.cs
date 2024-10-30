@@ -12,6 +12,7 @@ public class Pokemon
     public string KeyName {get; set;}
     public string InternalName { get; set; }
     public int FormNumber { get; set; }
+    public int DexNumber {get; set;}
     public string Name { get; set; }
     public string FormName { get; set; }
     public IEnumerable<Typing> Typings { get; set; }

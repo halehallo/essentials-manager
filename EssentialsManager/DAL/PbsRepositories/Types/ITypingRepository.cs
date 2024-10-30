@@ -10,6 +10,7 @@ public interface ITypingRepository
     ICollection<Typing> ReadAllTypings();
     IEnumerable<Typing> ReadAllTypingsWithJoin();
     IEnumerable<Typing> ReadAllTypingsWithFullJoin();
+    int ReadAmountOfTypings();
     bool HasAnyTyping();
     
 }

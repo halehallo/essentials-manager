@@ -1,0 +1,144 @@
+﻿<UserControl x:Class="UI.MVVM.View.PokemonOverview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:UI.MVVM.View"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="95*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Background="Transparent">
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Background="{StaticResource BackgroundColorLighter}"
+                    Name="ReturnHomeButton">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="10" RadiusY="10">
+                        <RectangleGeometry.Rect>
+                            <MultiBinding Converter="{StaticResource RectConverter}">
+                                <Binding ElementName="ReturnHomeButton" Path="ActualWidth" />
+                                <Binding ElementName="ReturnHomeButton" Path="ActualHeight" />
+                            </MultiBinding>
+                        </RectangleGeometry.Rect>
+                    </RectangleGeometry>
+                </Border.Clip>
+                <Button Content="Home" BorderBrush="Transparent" Background="Transparent" Padding="20, 10"
+                        Command="{Binding NavigateToProjectPickerCommand}" />
+            </Border>
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Background="{StaticResource BackgroundColorLighter}"
+                    Name="ReturnFunctionalityButton">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="10" RadiusY="10">
+                        <RectangleGeometry.Rect>
+                            <MultiBinding Converter="{StaticResource RectConverter}">
+                                <Binding ElementName="ReturnFunctionalityButton" Path="ActualWidth" />
+                                <Binding ElementName="ReturnFunctionalityButton" Path="ActualHeight" />
+                            </MultiBinding>
+                        </RectangleGeometry.Rect>
+                    </RectangleGeometry>
+                </Border.Clip>
+                <Button Content="Functionality" BorderBrush="Transparent" Background="Transparent" Padding="20, 10"
+                        Command="{Binding NavigateToProjectFunctionalityCommand}" />
+            </Border>
+        </StackPanel>
+        <Border Grid.Row="1"
+                Background="{StaticResource BackgroundColorDarker}"
+                Name="ContentBorder">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="20" RadiusY="20">
+                    <RectangleGeometry.Rect>
+                        <MultiBinding Converter="{StaticResource RectConverter}">
+                            <Binding ElementName="ContentBorder" Path="ActualWidth" />
+                            <Binding ElementName="ContentBorder" Path="ActualHeight" />
+                        </MultiBinding>
+                    </RectangleGeometry.Rect>
+                </RectangleGeometry>
+            </Border.Clip>
+            <Border
+                Background="{StaticResource BackgroundColorDarker}"
+                Name="DataGridBorder"
+                Margin="20">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="5" RadiusY="5">
+                        <RectangleGeometry.Rect>
+                            <MultiBinding Converter="{StaticResource RectConverter}">
+                                <Binding ElementName="DataGridBorder" Path="ActualWidth" />
+                                <Binding ElementName="DataGridBorder" Path="ActualHeight" />
+                            </MultiBinding>
+                        </RectangleGeometry.Rect>
+                    </RectangleGeometry>
+                </Border.Clip>
+                <DataGrid ItemsSource="{Binding PokemonGridRows}" AutoGenerateColumns="False"
+                          HeadersVisibility="Column" CanUserAddRows="False" CanUserDeleteRows="False"
+                          IsReadOnly="True" SelectionMode="Single"
+                          >
+                    <DataGrid.Columns>
+                        <!-- DexNumber Column -->
+                        <DataGridTextColumn Header="Dex" Binding="{Binding DexNumber}" Width="*" />
+                        <!-- Icon Column -->
+                        <DataGridTemplateColumn Header="Icon">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding IconImageSource}" Width="40" Height="40" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Name Column -->
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+
+                        <!-- FormNumber Column -->
+                        <DataGridTextColumn Header="Form" Binding="{Binding FormNumber}" Width="*" />
+                        <!-- Type1 Column -->
+                        <DataGridTemplateColumn Header="Type 1">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Viewbox Stretch="Uniform" Margin="2,0"
+                                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    >
+                                        <Image>
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource ImageSourceConverter}">
+                                                    <Binding Path="Type1.ImagePath" />
+                                                    <Binding Path="Type1.IconSourceRect" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Viewbox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        
+                        <!-- Type2 Column -->
+                        <DataGridTemplateColumn Header="Type 2">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Viewbox Stretch="Uniform" Margin="2,0"
+                                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                                             MaxWidth="64"
+                                    >
+                                        <Image>
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource ImageSourceConverter}">
+                                                    <Binding Path="Type2.ImagePath" />
+                                                    <Binding Path="Type2.IconSourceRect" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Viewbox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

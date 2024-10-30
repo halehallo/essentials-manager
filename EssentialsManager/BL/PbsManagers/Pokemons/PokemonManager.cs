@@ -31,6 +31,8 @@ public class PokemonManager : IPokemonManager
 
     public void WriteAllPokemonWithoutLinksToPbs(Dictionary<string, Dictionary<string, string>> blocks)
     {
+        int currentAmountOfPokemon = _pokemonRepository.ReadAmountOfPokemon();
+        
         ICollection<Typing> typingsFromRepo = _typingRepository.ReadAllTypings();
         var typingDictionary = typingsFromRepo.ToDictionary(t => t.InternalName, t => t);
         
@@ -436,6 +438,7 @@ public class PokemonManager : IPokemonManager
             {
                 KeyName = internalName + "_" + formNumber,
                 InternalName = internalName,
+                DexNumber = ++currentAmountOfPokemon,
                 Name = name,
                 FormName = formName,
                 FormNumber = int.Parse(formNumber),
@@ -514,5 +517,10 @@ public class PokemonManager : IPokemonManager
             }
         }
         _pokemonRepository.SaveChanges();
+    }
+
+    public IEnumerable<Pokemon> GetAllPokemonWithTypings()
+    {
+        return _pokemonRepository.ReadAllPokemonsWithTypings();
     }
 }

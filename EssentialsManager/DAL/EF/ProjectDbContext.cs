@@ -185,5 +185,10 @@ public class ProjectDbContext : DbContext
         modelBuilder.Entity<Pokemon>()
             .HasMany(p => p.TutorMoves)
             .WithMany(c => c.pokemonsWithTutorMove);
+        
+        modelBuilder.Entity<Pokemon>()
+            .HasMany(p => p.Typings)
+            .WithMany(t => t.PokemonsWithTyping);
+        
     }
 }
