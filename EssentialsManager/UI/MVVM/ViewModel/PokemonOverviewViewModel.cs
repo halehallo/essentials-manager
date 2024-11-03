@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using BL;
 using DOM.Project.Pokemons;
 using DOM.Project.Typings;
@@ -19,8 +20,11 @@ public class PokemonOverviewViewModel : Core.ViewModel
     private IProjectManager _projectManager;
 
     private INavigationService _navigation;
-    private ObservableCollection<PokemonGridRow> _pokemonGridRows;
-
+    private ObservableCollection<PokemonGridRow> _originalPokemonGridRows;
+    private ObservableCollection<PokemonGridRow> _filteredPokemonGridRows;
+    
+    private string _searchTerm;
+    private readonly DispatcherTimer _debounceTimer;
 
     public INavigationService Navigation
     {
@@ -32,14 +36,42 @@ public class PokemonOverviewViewModel : Core.ViewModel
         }
     }
 
-    public ObservableCollection<PokemonGridRow> PokemonGridRows
+    public ObservableCollection<PokemonGridRow> OriginalPokemonGridRows
     {
-        get => _pokemonGridRows;
+        get => _originalPokemonGridRows;
         set
         {
-            if (Equals(value, _pokemonGridRows)) return;
-            _pokemonGridRows = value;
+            if (Equals(value, _originalPokemonGridRows)) return;
+            _originalPokemonGridRows = value;
             OnPropertyChanged();
+        }
+    }
+    
+    public ObservableCollection<PokemonGridRow> FilteredPokemonGridRows
+    {
+        get => _filteredPokemonGridRows;
+        set
+        {
+            if (Equals(value, _filteredPokemonGridRows)) return;
+            _filteredPokemonGridRows = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    public string SearchTerm
+    {
+        get => _searchTerm;
+        set
+        {
+            if (_searchTerm != value)
+            {
+                _searchTerm = value;
+                OnPropertyChanged(nameof(SearchTerm));
+
+                // Reset and start the debounce timer
+                _debounceTimer.Stop();
+                _debounceTimer.Start();
+            }
         }
     }
 
@@ -51,11 +83,22 @@ public class PokemonOverviewViewModel : Core.ViewModel
         _projectManager = projectManager;
         _navigation = navigation;
 
-        PokemonGridRows = [];
+        OriginalPokemonGridRows = [];
+        FilteredPokemonGridRows = [];
 
         NavigateToProjectFunctionalityCommand =
             new RelayCommand(t => Navigation.NavigateTo<FunctionalityOverviewViewModel>(), o => true);
         NavigateToProjectPickerCommand = new RelayCommand(param => NavigateToProjectPicker(), o => true);
+        
+        _debounceTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(1) // Adjust the delay as needed
+        };
+        _debounceTimer.Tick += (s, e) => 
+        {
+            _debounceTimer.Stop(); // Stop the timer to prevent repeated ticks
+            FilterCollection(); // Call the filtering method
+        };
     }
 
     private void NavigateToProjectPicker()
@@ -66,8 +109,8 @@ public class PokemonOverviewViewModel : Core.ViewModel
 
     public void ReadAllPokemon()
     {
-        PokemonGridRows = [];
-        if (PokemonGridRows?.Count != 0) return;
+        OriginalPokemonGridRows = [];
+        if (OriginalPokemonGridRows?.Count != 0) return;
         IEnumerable<Pokemon> pokemons = _projectManager.GetAllPokemonsWithTypings();
         string projectPath = _projectManager.GetProjectFolderPath();
 
@@ -109,7 +152,8 @@ public class PokemonOverviewViewModel : Core.ViewModel
                 TypeImage type1 = new TypeImage()
                 {
                     ImagePath = typeImagePath,
-                    IconSourceRect = new Int32Rect(0, yOffset, imageWidth, iconHeight)
+                    IconSourceRect = new Int32Rect(0, yOffset, imageWidth, iconHeight),
+                    TypeName = typings[0].Name
                 };
 
                 TypeImage type2 = null;
@@ -120,7 +164,8 @@ public class PokemonOverviewViewModel : Core.ViewModel
                     type2 = new TypeImage()
                     {
                         ImagePath = typeImagePath,
-                        IconSourceRect = new Int32Rect(0, yOffset, imageWidth, iconHeight)
+                        IconSourceRect = new Int32Rect(0, yOffset, imageWidth, iconHeight),
+                        TypeName = typings[1].Name
                     };
                 }
 
@@ -134,10 +179,12 @@ public class PokemonOverviewViewModel : Core.ViewModel
                     Type2 = type2,
                 };
 
-                PokemonGridRows?.Add(gridRow);
+                OriginalPokemonGridRows?.Add(gridRow);
             }
         }
-        var collectionView = CollectionViewSource.GetDefaultView(PokemonGridRows!);
+        
+        FilteredPokemonGridRows = new ObservableCollection<PokemonGridRow>(OriginalPokemonGridRows!);
+        var collectionView = CollectionViewSource.GetDefaultView(FilteredPokemonGridRows!);
         if (collectionView != null)
         {
             // Clear any existing sort descriptions, in case they exist
@@ -145,6 +192,22 @@ public class PokemonOverviewViewModel : Core.ViewModel
 
             // Add a new SortDescription for DexNumber, sorted ascending
             collectionView.SortDescriptions.Add(new SortDescription("DexNumber", ListSortDirection.Ascending));
+        }
+    }
+    
+    private void FilterCollection()
+    {
+        FilteredPokemonGridRows.Clear();
+        var filtered = OriginalPokemonGridRows
+            .Where(item => string.IsNullOrEmpty(SearchTerm) || 
+                           item.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) || 
+                           item.Type1.TypeName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)|| 
+                           item.Type2?.TypeName?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) == true
+                           );
+
+        foreach (var item in filtered)
+        {
+            FilteredPokemonGridRows.Add(item);
         }
     }
 }
