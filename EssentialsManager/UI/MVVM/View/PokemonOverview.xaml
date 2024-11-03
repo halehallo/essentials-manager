@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UI.MVVM.View"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300"
-             >
+             d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="5*" />
@@ -46,6 +45,7 @@
                         Command="{Binding NavigateToProjectFunctionalityCommand}" />
             </Border>
         </StackPanel>
+        <!-- background border -->
         <Border Grid.Row="1"
                 Background="{StaticResource BackgroundColorDarker}"
                 Name="ContentBorder">
@@ -59,6 +59,7 @@
                     </RectangleGeometry.Rect>
                 </RectangleGeometry>
             </Border.Clip>
+            <!-- datagrid border for clipping -->
             <Border
                 Background="{StaticResource BackgroundColorDarker}"
                 Name="DataGridBorder"
@@ -75,32 +76,40 @@
                 </Border.Clip>
                 <DataGrid ItemsSource="{Binding PokemonGridRows}" AutoGenerateColumns="False"
                           HeadersVisibility="Column" CanUserAddRows="False" CanUserDeleteRows="False"
-                          IsReadOnly="True" SelectionMode="Single"
-                          >
+                          SelectionMode="Single">
                     <DataGrid.Columns>
                         <!-- DexNumber Column -->
-                        <DataGridTextColumn Header="Dex" Binding="{Binding DexNumber}" Width="*" />
+                        <DataGridTextColumn Header="Dex" Binding="{Binding DexNumber}" Width="5*" 
+                                            IsReadOnly="True" SortDirection="Ascending" 
+                                            ElementStyle="{StaticResource CenterTextCellStyle}"/>
                         <!-- Icon Column -->
-                        <DataGridTemplateColumn Header="Icon">
+                        <DataGridTemplateColumn Header="Icon" Width="20*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Image Source="{Binding IconImageSource}" Width="40" Height="40" />
+                                    <Viewbox Stretch="Uniform" Margin="2,0"
+                                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                                             MaxHeight="160">
+                                        <Image Source="{Binding IconImageSource}" />
+                                    </Viewbox>
+
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
                         <!-- Name Column -->
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="40*" IsReadOnly="True"
+                                            ElementStyle="{StaticResource CenterTextCellStyle}"/>
 
                         <!-- FormNumber Column -->
-                        <DataGridTextColumn Header="Form" Binding="{Binding FormNumber}" Width="*" />
+                        <DataGridTextColumn Header="Form" Binding="{Binding FormNumber}" Width="5*" IsReadOnly="True"
+                                            ElementStyle="{StaticResource CenterTextCellStyle}"/>
                         <!-- Type1 Column -->
-                        <DataGridTemplateColumn Header="Type 1">
+                        <DataGridTemplateColumn Header="Type 1" Width="10*" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Viewbox Stretch="Uniform" Margin="2,0"
                                              HorizontalAlignment="Center" VerticalAlignment="Center"
-                                    >
+                                             MaxWidth="64">
                                         <Image>
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource ImageSourceConverter}">
@@ -113,15 +122,14 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        
+
                         <!-- Type2 Column -->
-                        <DataGridTemplateColumn Header="Type 2">
+                        <DataGridTemplateColumn Header="Type 2" Width="10*" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Viewbox Stretch="Uniform" Margin="2,0"
                                              HorizontalAlignment="Center" VerticalAlignment="Center"
-                                             MaxWidth="64"
-                                    >
+                                             MaxWidth="64">
                                         <Image>
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource ImageSourceConverter}">
@@ -135,6 +143,11 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
+                        <DataGridCheckBoxColumn Header="Wild Pokemon" Binding="{Binding IsCatchable}" Width="5*" 
+                                                IsReadOnly="True" ElementStyle="{StaticResource ReadOnlyCheckboxStyle}"/>
+                        <DataGridCheckBoxColumn Header="Gift Pokemon" Binding="{Binding IsGift, Mode=TwoWay}"
+                                                IsReadOnly="False" Width="5*" ElementStyle="{StaticResource CenterCheckboxCellStyle}"
+                                                EditingElementStyle="{StaticResource CenterCheckboxCellStyle}"/>
 
                     </DataGrid.Columns>
                 </DataGrid>

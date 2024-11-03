@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using BL;
 using DOM.Project.Pokemons;
@@ -87,17 +89,17 @@ public class PokemonOverviewViewModel : Core.ViewModel
             if (pokemon.FormNumber == 0)
             {
                 // icon
-                string pokemonName = pokemon.Name;
+                string pokemonName = pokemon.InternalName;
                 if (pokemon.FormNumber != 0)
                 {
                     pokemonName = pokemonName + "_" + pokemon.FormNumber;
                 }
 
-                string iconImageSource = projectPath + "\\Graphics\\Pokemon\\Icons\\" + pokemonName + ".png";
+                string iconImageSource = projectPath + "\\Graphics\\Pokemon\\Front\\" + pokemonName + ".png";
 
                 if (!File.Exists(iconImageSource))
                 {
-                    iconImageSource = projectPath + "\\Graphics\\Pokemon\\Icons\\000.png";
+                    iconImageSource = projectPath + "\\Graphics\\Pokemon\\Front\\000.png";
                 }
 
                 // typing
@@ -110,11 +112,7 @@ public class PokemonOverviewViewModel : Core.ViewModel
                     IconSourceRect = new Int32Rect(0, yOffset, imageWidth, iconHeight)
                 };
 
-                TypeImage type2 = new TypeImage()
-                {
-                    ImagePath = typeImagePath,
-                    IconSourceRect = new Int32Rect(0, yOffset, imageWidth, iconHeight)
-                };
+                TypeImage type2 = null;
 
                 if (typings.Count > 1)
                 {
@@ -138,6 +136,15 @@ public class PokemonOverviewViewModel : Core.ViewModel
 
                 PokemonGridRows?.Add(gridRow);
             }
+        }
+        var collectionView = CollectionViewSource.GetDefaultView(PokemonGridRows!);
+        if (collectionView != null)
+        {
+            // Clear any existing sort descriptions, in case they exist
+            collectionView.SortDescriptions.Clear();
+
+            // Add a new SortDescription for DexNumber, sorted ascending
+            collectionView.SortDescriptions.Add(new SortDescription("DexNumber", ListSortDirection.Ascending));
         }
     }
 }

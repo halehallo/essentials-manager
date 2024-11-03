@@ -11,6 +11,9 @@ public class PokemonGridRow : ObservableObject
     private TypeImage _type2;
     private int _dexNumber;
     private int _formNumber;
+    private bool _isCatchable;
+    private bool _isGift;
+    private bool _isChanged;
 
     public string IconImageSource
     {
@@ -74,6 +77,40 @@ public class PokemonGridRow : ObservableObject
         {
             if (value == _formNumber) return;
             _formNumber = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsCatchable
+    {
+        get => _isCatchable;
+        set
+        {
+            if (value == _isCatchable) return;
+            _isCatchable = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsGift
+    {
+        get => _isGift;
+        set
+        {
+            if (value == _isGift) return;
+            _isGift = value;
+            _isChanged = true;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsChanged
+    {
+        get => _isChanged;
+        set
+        {
+            if (value == _isChanged) return;
+            _isChanged = value;
             OnPropertyChanged();
         }
     }
