@@ -210,4 +210,6 @@ public class PokemonOverviewViewModel : Core.ViewModel
             FilteredPokemonGridRows.Add(item);
         }
     }
+    
+    
 }

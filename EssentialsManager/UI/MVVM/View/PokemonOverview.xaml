@@ -68,7 +68,12 @@
                 <TextBox
                          Margin="10" 
                          Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}" 
-                         
+                         Style="{StaticResource PlaceholderTextBoxStyle}" 
+                         TextAlignment="Center"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Foreground="Gray"
+                         FontSize="20"
                          />
                 <Border
                     Background="{StaticResource BackgroundColorDarker}"

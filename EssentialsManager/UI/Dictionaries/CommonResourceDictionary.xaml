@@ -8,4 +8,43 @@
     <SolidColorBrush x:Key="TextColorLight" Color="#ecf0f1"/>
     <SolidColorBrush x:Key="TextColorDark" Color="#34495e"/>
     <services:ImageSourceConverter x:Key="ImageSourceConverter" />
+    
+    <Style x:Key="PlaceholderTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <!-- TextBox content host -->
+                        <ScrollViewer x:Name="PART_ContentHost" />
+
+                        <!-- Placeholder TextBlock -->
+                        <TextBlock
+                            Text="Search Name or Type..."
+                            Foreground="Gray"
+                            IsHitTestVisible="False"
+                            VerticalAlignment="Center"
+                            Margin="5,0"
+                            FontSize="20">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Text, RelativeSource={RelativeSource AncestorType=TextBox}}" Value="" />
+                                                <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource AncestorType=TextBox}}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    
 </ResourceDictionary>
