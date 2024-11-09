@@ -21,7 +21,7 @@ public class PokemonOverviewViewModel : Core.ViewModel
 
     private INavigationService _navigation;
     private ObservableCollection<PokemonGridRow> _originalPokemonGridRows;
-    private ObservableCollection<PokemonGridRow> _filteredPokemonGridRows;
+    private ICollectionView _pokemonView;
     
     private string _searchTerm;
     private readonly DispatcherTimer _debounceTimer;
@@ -47,13 +47,13 @@ public class PokemonOverviewViewModel : Core.ViewModel
         }
     }
     
-    public ObservableCollection<PokemonGridRow> FilteredPokemonGridRows
+    public ICollectionView PokemonView
     {
-        get => _filteredPokemonGridRows;
-        set
+        get => _pokemonView;
+        private set
         {
-            if (Equals(value, _filteredPokemonGridRows)) return;
-            _filteredPokemonGridRows = value;
+            if (Equals(value, _pokemonView)) return;
+            _pokemonView = value;
             OnPropertyChanged();
         }
     }
@@ -84,7 +84,8 @@ public class PokemonOverviewViewModel : Core.ViewModel
         _navigation = navigation;
 
         OriginalPokemonGridRows = [];
-        FilteredPokemonGridRows = [];
+        PokemonView = CollectionViewSource.GetDefaultView(OriginalPokemonGridRows);
+        PokemonView.Filter = FilterPredicate;
 
         NavigateToProjectFunctionalityCommand =
             new RelayCommand(t => Navigation.NavigateTo<FunctionalityOverviewViewModel>(), o => true);
@@ -97,7 +98,7 @@ public class PokemonOverviewViewModel : Core.ViewModel
         _debounceTimer.Tick += (s, e) => 
         {
             _debounceTimer.Stop(); // Stop the timer to prevent repeated ticks
-            FilterCollection(); // Call the filtering method
+            PokemonView.Refresh(); // Call the filtering method
         };
     }
 
@@ -187,9 +188,10 @@ public class PokemonOverviewViewModel : Core.ViewModel
                 OriginalPokemonGridRows?.Add(gridRow);
             }
         }
+        PokemonView = CollectionViewSource.GetDefaultView(OriginalPokemonGridRows!);
+        PokemonView.Filter = FilterPredicate;
         
-        FilteredPokemonGridRows = new ObservableCollection<PokemonGridRow>(OriginalPokemonGridRows!);
-        var collectionView = CollectionViewSource.GetDefaultView(FilteredPokemonGridRows!);
+        var collectionView = PokemonView;
         if (collectionView != null)
         {
             // Clear any existing sort descriptions, in case they exist
@@ -199,37 +201,17 @@ public class PokemonOverviewViewModel : Core.ViewModel
             collectionView.SortDescriptions.Add(new SortDescription("DexNumber", ListSortDirection.Ascending));
         }
     }
+    private bool FilterPredicate(object item)
+    {
+        if (item is not PokemonGridRow pokemon) return false;
+
+        // Apply filtering logic based on SearchTerm
+        return string.IsNullOrEmpty(SearchTerm) ||
+               pokemon.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+               pokemon.Type1.TypeName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+               (pokemon.Type2?.TypeName?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ?? false);
+    }
+
     
-    private void FilterCollection()
-    {
-        SetChangedProperties();
-        FilteredPokemonGridRows.Clear();
-        var filtered = OriginalPokemonGridRows
-            .Where(item => string.IsNullOrEmpty(SearchTerm) || 
-                           item.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) || 
-                           item.Type1.TypeName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)|| 
-                           item.Type2?.TypeName?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) == true
-                           );
-
-        foreach (var item in filtered)
-        {
-            FilteredPokemonGridRows.Add(item);
-        }
-    }
-
-    private void SetChangedProperties()
-    {
-        var filtered = FilteredPokemonGridRows.Where(pokemon => pokemon.IsChanged);
-        foreach (var pokemon in filtered)
-        {
-            var originalPokemon = OriginalPokemonGridRows.FirstOrDefault(op => op.Id == pokemon.Id);
-
-            if (originalPokemon != null)
-            {
-                originalPokemon.IsGift = pokemon.IsGift;
-                originalPokemon.IsChanged = true;
-            }
-        }
-    }
     
 }

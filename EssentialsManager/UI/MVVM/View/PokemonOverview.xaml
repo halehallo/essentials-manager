@@ -104,7 +104,7 @@
                             </RectangleGeometry.Rect>
                         </RectangleGeometry>
                     </Border.Clip>
-                    <DataGrid ItemsSource="{Binding FilteredPokemonGridRows}" AutoGenerateColumns="False"
+                    <DataGrid ItemsSource="{Binding PokemonView}" AutoGenerateColumns="False"
                               HeadersVisibility="Column" CanUserAddRows="False" CanUserDeleteRows="False"
                               SelectionMode="Single">
                         <DataGrid.Columns>
