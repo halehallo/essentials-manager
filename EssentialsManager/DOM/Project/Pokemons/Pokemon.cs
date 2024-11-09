@@ -55,6 +55,8 @@ public class Pokemon
     public int UnmegaForm { get; set; }
     public Move MegaMove {get; set;}
     public int MegaMessage { get; set; }
+    public bool IsCatchable { get; set; }
+    public bool IsGift { get; set; }
 
     //navigation prop
     public ICollection<Pokemon> Parents { get; set; }

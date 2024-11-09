@@ -4,16 +4,19 @@
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="FontSize" Value="24" />
+        
     </Style>
     
     <Style x:Key="CenterCheckboxCellStyle" TargetType="CheckBox">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="IsThreeState" Value="False" /> <!-- Ensures the checkbox is not tri-state -->
     </Style>
     
     <Style x:Key="ReadOnlyCheckboxStyle" TargetType="CheckBox">
         <Setter Property="IsEnabled" Value="False"/>
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="IsThreeState" Value="False" /> <!-- Ensures the checkbox is not tri-state -->
     </Style>
 </ResourceDictionary>

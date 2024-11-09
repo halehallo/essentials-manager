@@ -5,6 +5,7 @@ namespace UI.MVVM.Model.Pokemon;
 
 public class PokemonGridRow : ObservableObject
 {
+    private int _id;
     private string _iconImageSource;
     private string _name;
     private TypeImage _type1;
@@ -15,6 +16,16 @@ public class PokemonGridRow : ObservableObject
     private bool _isGift;
     private bool _isChanged;
 
+    public int Id
+    {
+        get => _id;
+        set
+        {
+            if (value == _id) return;
+            _id = value;
+            OnPropertyChanged();
+        }
+    }
     public string IconImageSource
     {
         get => _iconImageSource;

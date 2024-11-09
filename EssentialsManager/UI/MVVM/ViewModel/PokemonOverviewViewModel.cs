@@ -121,6 +121,7 @@ public class PokemonOverviewViewModel : Core.ViewModel
             typeImagePath = projectPath + "\\Graphics\\Pictures\\Pokedex\\icon_types.png";
         }
 
+        int pokemonId = 0;
         BitmapImage typeIconsImage = new BitmapImage(new Uri(typeImagePath));
         int amountOfTypings = _projectManager.getAmountOfTypings();
         int imageHeight = typeIconsImage.PixelHeight;
@@ -171,12 +172,16 @@ public class PokemonOverviewViewModel : Core.ViewModel
 
                 PokemonGridRow gridRow = new PokemonGridRow()
                 {
+                    Id = pokemonId++,
                     DexNumber = pokemon.DexNumber,
                     FormNumber = pokemon.FormNumber,
                     IconImageSource = iconImageSource,
                     Name = pokemon.Name,
                     Type1 = type1,
                     Type2 = type2,
+                    IsCatchable = pokemon.IsCatchable,
+                    IsGift = pokemon.IsGift,
+                    IsChanged = false,
                 };
 
                 OriginalPokemonGridRows?.Add(gridRow);
@@ -197,6 +202,7 @@ public class PokemonOverviewViewModel : Core.ViewModel
     
     private void FilterCollection()
     {
+        SetChangedProperties();
         FilteredPokemonGridRows.Clear();
         var filtered = OriginalPokemonGridRows
             .Where(item => string.IsNullOrEmpty(SearchTerm) || 
@@ -210,6 +216,20 @@ public class PokemonOverviewViewModel : Core.ViewModel
             FilteredPokemonGridRows.Add(item);
         }
     }
-    
+
+    private void SetChangedProperties()
+    {
+        var filtered = FilteredPokemonGridRows.Where(pokemon => pokemon.IsChanged);
+        foreach (var pokemon in filtered)
+        {
+            var originalPokemon = OriginalPokemonGridRows.FirstOrDefault(op => op.Id == pokemon.Id);
+
+            if (originalPokemon != null)
+            {
+                originalPokemon.IsGift = pokemon.IsGift;
+                originalPokemon.IsChanged = true;
+            }
+        }
+    }
     
 }

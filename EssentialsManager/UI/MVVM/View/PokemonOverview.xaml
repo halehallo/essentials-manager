@@ -62,19 +62,33 @@
             <!-- datagrid border for clipping -->
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="5*"/>
-                    <RowDefinition Height="95*"/>
+                    <RowDefinition Height="5*" />
+                    <RowDefinition Height="95*" />
                 </Grid.RowDefinitions>
-                <TextBox
-                         Margin="10" 
-                         Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}" 
-                         Style="{StaticResource PlaceholderTextBoxStyle}" 
-                         TextAlignment="Center"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Foreground="Gray"
-                         FontSize="20"
-                         />
+                <Border 
+                        Background="{StaticResource BackgroundColorLight}"
+                        Name="SearchBorder"
+                        Margin="10">
+                    <Border.Clip>
+                        <RectangleGeometry RadiusX="20" RadiusY="20">
+                            <RectangleGeometry.Rect>
+                                <MultiBinding Converter="{StaticResource RectConverter}">
+                                    <Binding ElementName="SearchBorder" Path="ActualWidth" />
+                                    <Binding ElementName="SearchBorder" Path="ActualHeight" />
+                                </MultiBinding>
+                            </RectangleGeometry.Rect>
+                        </RectangleGeometry>
+                    </Border.Clip>
+                    <TextBox
+                        Margin="10"
+                        Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource PlaceholderTextBoxStyle}"
+                        TextAlignment="Center"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="Black"
+                        FontSize="20" />
+                </Border>
                 <Border
                     Background="{StaticResource BackgroundColorDarker}"
                     Name="DataGridBorder"
@@ -163,7 +177,8 @@
                             <DataGridCheckBoxColumn Header="Wild Pokemon" Binding="{Binding IsCatchable}" Width="5*"
                                                     IsReadOnly="True"
                                                     ElementStyle="{StaticResource ReadOnlyCheckboxStyle}" />
-                            <DataGridCheckBoxColumn Header="Gift Pokemon" Binding="{Binding IsGift, Mode=TwoWay}"
+                            <DataGridCheckBoxColumn Header="Gift Pokemon"
+                                                    Binding="{Binding IsGift, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     IsReadOnly="False" Width="5*"
                                                     ElementStyle="{StaticResource CenterCheckboxCellStyle}"
                                                     EditingElementStyle="{StaticResource CenterCheckboxCellStyle}" />
