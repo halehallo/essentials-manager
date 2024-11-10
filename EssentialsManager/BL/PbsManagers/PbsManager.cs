@@ -5,6 +5,7 @@ using BL.PbsManagers.Moves;
 using BL.PbsManagers.Pokemons;
 using BL.PbsManagers.Types;
 using DAL;
+using DOM.Project.Pokemons;
 using DOM.Project.Typings;
 
 namespace BL.PbsManagers;
@@ -166,6 +167,18 @@ public class PbsManager : IPbsManager
             }
             _typeManager.UpdateType(defendingType);
         }
+    }
+
+    public void SavePokemonAvailabilityChanges(ICollection<PokemonAvailabilityChange> changes)
+    {
+        foreach (PokemonAvailabilityChange change in changes)
+        {
+            Pokemon pokemonToChange = _pokemonManager.GetPokemonFromKeyName(change.KeyName);
+            pokemonToChange.IsEvent = change.IsEventPokemon;
+            pokemonToChange.IsGift = change.IsGift;
+            _pokemonManager.UpdatePokemon(pokemonToChange);
+        }
+        _pokemonManager.SaveChanges();
     }
 
     public void SaveTypingsToPbsFromDatabase()

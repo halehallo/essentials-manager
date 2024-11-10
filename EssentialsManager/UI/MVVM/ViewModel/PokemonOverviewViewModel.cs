@@ -6,6 +6,7 @@ using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using BL;
+using BL.DataTransferObjects;
 using DOM.Project.Pokemons;
 using DOM.Project.Typings;
 using UI.Core;
@@ -25,6 +26,9 @@ public class PokemonOverviewViewModel : Core.ViewModel
     
     private string _searchTerm;
     private readonly DispatcherTimer _debounceTimer;
+    
+    public RelayCommand SaveDataGridChangesCommand { get; set; }
+
 
     public INavigationService Navigation
     {
@@ -90,6 +94,8 @@ public class PokemonOverviewViewModel : Core.ViewModel
         NavigateToProjectFunctionalityCommand =
             new RelayCommand(t => Navigation.NavigateTo<FunctionalityOverviewViewModel>(), o => true);
         NavigateToProjectPickerCommand = new RelayCommand(param => NavigateToProjectPicker(), o => true);
+        SaveDataGridChangesCommand = new RelayCommand(o => SaveDataGridChanges(), o => true);
+
         
         _debounceTimer = new DispatcherTimer
         {
@@ -124,7 +130,7 @@ public class PokemonOverviewViewModel : Core.ViewModel
 
         int pokemonId = 0;
         BitmapImage typeIconsImage = new BitmapImage(new Uri(typeImagePath));
-        int amountOfTypings = _projectManager.getAmountOfTypings();
+        int amountOfTypings = _projectManager.GetAmountOfTypings();
         int imageHeight = typeIconsImage.PixelHeight;
         int imageWidth = typeIconsImage.PixelWidth;
         int iconHeight = imageHeight / amountOfTypings;
@@ -174,6 +180,7 @@ public class PokemonOverviewViewModel : Core.ViewModel
                 PokemonGridRow gridRow = new PokemonGridRow()
                 {
                     Id = pokemonId++,
+                    KeyName = pokemon.KeyName,
                     DexNumber = pokemon.DexNumber,
                     FormNumber = pokemon.FormNumber,
                     IconImageSource = iconImageSource,
@@ -181,6 +188,7 @@ public class PokemonOverviewViewModel : Core.ViewModel
                     Type1 = type1,
                     Type2 = type2,
                     IsCatchable = pokemon.IsCatchable,
+                    IsEvent = pokemon.IsEvent,
                     IsGift = pokemon.IsGift,
                     IsChanged = false,
                 };
@@ -212,6 +220,23 @@ public class PokemonOverviewViewModel : Core.ViewModel
                (pokemon.Type2?.TypeName?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ?? false);
     }
 
-    
+    public void SaveDataGridChanges()
+    {
+        List<PokemonGridRow> changedRows = new List<PokemonGridRow>(OriginalPokemonGridRows.Where(r => r.IsChanged));
+        
+        List<PokemonAvailabilityChange> changedAvailabilities = new List<PokemonAvailabilityChange>();
+
+        foreach (PokemonGridRow row in changedRows)
+        {
+            changedAvailabilities.Add(new PokemonAvailabilityChange()
+            {
+                KeyName = row.KeyName,
+                IsEventPokemon = row.IsEvent,
+                IsGift = row.IsGift,
+            });
+        }
+        
+        _projectManager.ChangePokemonAvailability(changedAvailabilities);
+    }
     
 }

@@ -8,5 +8,6 @@ public interface IPbsManager
     void LoadAllPbsFiles();
     bool HasDataSaved();
     void SaveTypeEffectivenessChanges(ICollection<TypeEffectivenessFieldChange> changes);
+    void SavePokemonAvailabilityChanges(ICollection<PokemonAvailabilityChange> changes);
     void SaveTypingsToPbsFromDatabase();
 }

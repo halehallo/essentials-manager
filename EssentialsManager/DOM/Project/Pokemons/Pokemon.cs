@@ -56,6 +56,7 @@ public class Pokemon
     public Move MegaMove {get; set;}
     public int MegaMessage { get; set; }
     public bool IsCatchable { get; set; }
+    public bool IsEvent { get; set; }
     public bool IsGift { get; set; }
 
     //navigation prop

@@ -6,6 +6,7 @@ namespace UI.MVVM.Model.Pokemon;
 public class PokemonGridRow : ObservableObject
 {
     private int _id;
+    private string _keyName;
     private string _iconImageSource;
     private string _name;
     private TypeImage _type1;
@@ -13,6 +14,7 @@ public class PokemonGridRow : ObservableObject
     private int _dexNumber;
     private int _formNumber;
     private bool _isCatchable;
+    private bool _isEvent;
     private bool _isGift;
     private bool _isChanged;
 
@@ -23,6 +25,16 @@ public class PokemonGridRow : ObservableObject
         {
             if (value == _id) return;
             _id = value;
+            OnPropertyChanged();
+        }
+    }
+    public string KeyName
+    {
+        get => _keyName;
+        set
+        {
+            if (value == _keyName) return;
+            _keyName = value;
             OnPropertyChanged();
         }
     }
@@ -99,6 +111,18 @@ public class PokemonGridRow : ObservableObject
         {
             if (value == _isCatchable) return;
             _isCatchable = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    public bool IsEvent
+    {
+        get => _isEvent;
+        set
+        {
+            if (value == _isEvent) return;
+            _isEvent = value;
+            _isChanged = true;
             OnPropertyChanged();
         }
     }

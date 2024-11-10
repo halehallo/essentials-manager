@@ -62,7 +62,7 @@ public class ProjectManager : IProjectManager
         return _pokemonManager.GetAllPokemonWithTypings();
     }
 
-    public int getAmountOfTypings()
+    public int GetAmountOfTypings()
     {
         return _typeManager.getAmountOfTypings();
     }
@@ -71,6 +71,11 @@ public class ProjectManager : IProjectManager
     {
         _pbsManager.SaveTypeEffectivenessChanges(changes);
         _pbsManager.SaveTypingsToPbsFromDatabase();
+    }
+
+    public void ChangePokemonAvailability(ICollection<PokemonAvailabilityChange> changes)
+    {
+        _pbsManager.SavePokemonAvailabilityChanges(changes);
     }
 
     public string GetProjectFolderPath()

@@ -59,13 +59,19 @@
                     </RectangleGeometry.Rect>
                 </RectangleGeometry>
             </Border.Clip>
-            <!-- datagrid border for clipping -->
+            <!-- content border for clipping -->
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5*" />
                     <RowDefinition Height="95*" />
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="95*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <!-- top Bar with search field and save button -->
                 <Border 
+                        Grid.Row="0" Grid.Column="0"
                         Background="{StaticResource BackgroundColorLight}"
                         Name="SearchBorder"
                         Margin="10">
@@ -89,11 +95,29 @@
                         Foreground="Black"
                         FontSize="20" />
                 </Border>
+                
+                <Border Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center"
+                        Background="{StaticResource BackgroundColorLighter}"
+                        Name="SaveDataGridChangesButton">
+                    <Border.Clip>
+                        <RectangleGeometry RadiusX="10" RadiusY="10">
+                            <RectangleGeometry.Rect>
+                                <MultiBinding Converter="{StaticResource RectConverter}">
+                                    <Binding ElementName="SaveDataGridChangesButton" Path="ActualWidth" />
+                                    <Binding ElementName="SaveDataGridChangesButton" Path="ActualHeight" />
+                                </MultiBinding>
+                            </RectangleGeometry.Rect>
+                        </RectangleGeometry>
+                    </Border.Clip>
+                    <Button Content="Save" BorderBrush="Transparent" Background="Transparent" Padding="20, 10"
+                            Command="{Binding SaveDataGridChangesCommand}" />
+                </Border>
+                <!-- Datagrid -->
                 <Border
                     Background="{StaticResource BackgroundColorDarker}"
                     Name="DataGridBorder"
                     Margin="20"
-                    Grid.Row="1">
+                    Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                     <Border.Clip>
                         <RectangleGeometry RadiusX="5" RadiusY="5">
                             <RectangleGeometry.Rect>
@@ -127,7 +151,7 @@
                             </DataGridTemplateColumn>
 
                             <!-- Name Column -->
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="40*" IsReadOnly="True"
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="35*" IsReadOnly="True"
                                                 ElementStyle="{StaticResource CenterTextCellStyle}" />
 
                             <!-- FormNumber Column -->
@@ -179,6 +203,11 @@
                                                     ElementStyle="{StaticResource ReadOnlyCheckboxStyle}" />
                             <DataGridCheckBoxColumn Header="Gift Pokemon"
                                                     Binding="{Binding IsGift, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    IsReadOnly="False" Width="5*"
+                                                    ElementStyle="{StaticResource CenterCheckboxCellStyle}"
+                                                    EditingElementStyle="{StaticResource CenterCheckboxCellStyle}" />
+                            <DataGridCheckBoxColumn Header="Event Pokemon"
+                                                    Binding="{Binding IsEvent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     IsReadOnly="False" Width="5*"
                                                     ElementStyle="{StaticResource CenterCheckboxCellStyle}"
                                                     EditingElementStyle="{StaticResource CenterCheckboxCellStyle}" />

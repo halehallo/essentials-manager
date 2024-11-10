@@ -82,10 +82,21 @@ public class PokemonRepository : IPokemonRepository
             .Include(p => p.Typings)
             .AsEnumerable();
     }
+    
+    public IEnumerable<Pokemon> ReadAllPokemons()
+    {
+        return _context.Pokemons
+            .AsEnumerable();
+    }
 
     public Pokemon ReadPokemonByInternalName(string internalName)
     {
         return _context.Pokemons.First(pokemon => pokemon.InternalName == internalName);
+    }
+    
+    public Pokemon ReadPokemonByKeyName(string keyName)
+    {
+        return _context.Pokemons.Find(keyName);
     }
 
     public ICollection<PokemonGenderRatio> ReadAllGenderRatios()
@@ -136,6 +147,11 @@ public class PokemonRepository : IPokemonRepository
     public int ReadAmountOfPokemon()
     {
         return _context.Pokemons.Count();
+    }
+
+    public void UpdatePokemon(Pokemon pokemon)
+    {
+        _context.Pokemons.Update(pokemon);
     }
 
     public void SaveChanges()

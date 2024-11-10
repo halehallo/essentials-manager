@@ -12,7 +12,8 @@ public interface IProjectManager
     public void CompilePbsFiles();
     public IEnumerable<Typing> GetAllTypingsWithFullJoins();
     public IEnumerable<Pokemon> GetAllPokemonsWithTypings();
-    public int getAmountOfTypings();
+    public int GetAmountOfTypings();
     public void ChangeTypeEffectiveness(ICollection<TypeEffectivenessFieldChange> changes);
+    public void ChangePokemonAvailability(ICollection<PokemonAvailabilityChange> changes);
     public string GetProjectFolderPath();
 }

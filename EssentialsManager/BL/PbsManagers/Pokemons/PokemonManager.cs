@@ -481,6 +481,9 @@ public class PokemonManager : IPokemonManager
                 UnmegaForm = int.Parse(unmegaForm),
                 MegaMove = megaMove,
                 MegaMessage = int.Parse(megaMessage),
+                IsCatchable = false,
+                IsEvent = false,
+                IsGift = false,
             };
             
             _pokemonRepository.CreatePokemon(pokemon);
@@ -522,5 +525,26 @@ public class PokemonManager : IPokemonManager
     public IEnumerable<Pokemon> GetAllPokemonWithTypings()
     {
         return _pokemonRepository.ReadAllPokemonsWithTypings();
+    }
+    
+    public IEnumerable<Pokemon> GetAllPokemon()
+    {
+        return _pokemonRepository.ReadAllPokemons();
+    }
+
+    public Pokemon GetPokemonFromKeyName(string keyName)
+    {
+        return _pokemonRepository.ReadPokemonByKeyName(keyName);
+    }
+
+    public void UpdatePokemon(Pokemon pokemon)
+    {
+        _pokemonRepository.UpdatePokemon(pokemon);
+        
+    }
+
+    public void SaveChanges()
+    {
+        _pokemonRepository.SaveChanges();
     }
 }
