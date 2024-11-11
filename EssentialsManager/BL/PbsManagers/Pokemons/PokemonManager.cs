@@ -88,7 +88,7 @@ public class PokemonManager : IPokemonManager
             block.Value.TryGetValue("Types", out string typesString);
 
             ICollection<string> typesStringCollection = typesString != null ? typesString.Split(',').ToList() : [];
-            ICollection<Typing> typings = new List<Typing>();
+            IList<Typing> typings = new List<Typing>();
 
             foreach (string typingString in typesStringCollection)
             {

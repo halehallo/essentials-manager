@@ -2,6 +2,7 @@
 using BL;
 using BL.PbsManagers;
 using BL.PbsManagers.Abilities;
+using BL.PbsManagers.Dex;
 using BL.PbsManagers.Items;
 using BL.PbsManagers.Moves;
 using BL.PbsManagers.Pokemons;
@@ -63,6 +64,7 @@ public partial class App : Application
         services.AddScoped<IMoveManager, MoveManager>();
         services.AddScoped<IItemManager, ItemManager>();
         services.AddScoped<IPokemonManager, PokemonManager>();
+        services.AddScoped<IDexManager, DexManager>();
         services.AddScoped<IFileManager, FileManager>();
         
         // Add scoped services frontend
@@ -76,6 +78,7 @@ public partial class App : Application
         services.AddSingleton<FunctionalityOverviewViewModel>();
         services.AddSingleton<TypeEffectivenessViewModel>();
         services.AddSingleton<PokemonOverviewViewModel>();
+        services.AddSingleton<DexTypeCountViewModel>();
         services.AddSingleton<Func<Type, ViewModel>>(serviceProvider => viewModelType => (ViewModel)serviceProvider.GetService(viewModelType));
         
         services.AddSingleton<RectConverter>();

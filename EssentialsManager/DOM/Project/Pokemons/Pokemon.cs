@@ -15,7 +15,7 @@ public class Pokemon
     public int DexNumber {get; set;}
     public string Name { get; set; }
     public string FormName { get; set; }
-    public IEnumerable<Typing> Typings { get; set; }
+    public IList<Typing> Typings { get; set; }
     public int Hp { get; set; }
     public int Attack { get; set; }
     public int Defense { get; set; }

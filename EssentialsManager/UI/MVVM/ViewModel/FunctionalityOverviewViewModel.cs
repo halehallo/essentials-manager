@@ -1,4 +1,5 @@
 ﻿using BL;
+using LiveCharts;
 using UI.Core;
 using UI.MVVM.Model.Error;
 using UI.Services;
@@ -11,6 +12,7 @@ public class FunctionalityOverviewViewModel : Core.ViewModel
     private INavigationService _navigation;
     private TypeEffectivenessViewModel _typeEffectivenessViewModel;
     private PokemonOverviewViewModel _pokemonOverviewViewModel;
+    private DexTypeCountViewModel _dexTypeCountViewModel;
 
     public INavigationService Navigation
     {
@@ -25,19 +27,25 @@ public class FunctionalityOverviewViewModel : Core.ViewModel
     public RelayCommand NavigateToProjectPickerCommand { get; set; }
     public RelayCommand NavigateToTypeEffectivenessViewCommand { get; set; }
     public RelayCommand NavigateToPokemonOverviewCommand { get; set; }
+    public RelayCommand NavigateToDexTypeCountOverviewCommand { get; set; }
+    
+    public SeriesCollection SeriesCollection { get; set; }
+    public List<string> TypingLabels { get; set; }
 
     public FunctionalityOverviewViewModel(IProjectManager projectManager,
         INavigationService navigationService, TypeEffectivenessViewModel typeEffectivenessViewModel,
-        PokemonOverviewViewModel pokemonOverviewViewModel)
+        PokemonOverviewViewModel pokemonOverviewViewModel, DexTypeCountViewModel dexTypeCountViewModel)
     {
         _projectManager = projectManager;
         _typeEffectivenessViewModel = typeEffectivenessViewModel;
         _pokemonOverviewViewModel = pokemonOverviewViewModel;
+        _dexTypeCountViewModel = dexTypeCountViewModel;
         
         Navigation = navigationService;
         NavigateToProjectPickerCommand = new RelayCommand(param => NavigateToProjectPicker(), o => true);
         NavigateToTypeEffectivenessViewCommand = new RelayCommand(param => NavigateToTypeEffectivenessView(), o => true);
         NavigateToPokemonOverviewCommand = new RelayCommand(param => NavigateToPokemonOverview(), o => true);
+        NavigateToDexTypeCountOverviewCommand = new RelayCommand(param => NavigateToDexTypeCountOverview(), o => true);
     }
 
     private void NavigateToProjectPicker()
@@ -56,5 +64,11 @@ public class FunctionalityOverviewViewModel : Core.ViewModel
     {
         _pokemonOverviewViewModel.ReadAllPokemon();
         Navigation.NavigateTo<PokemonOverviewViewModel>();
+    }
+    
+    private void NavigateToDexTypeCountOverview()
+    {
+        _dexTypeCountViewModel.ReadAllDexTypeCounts();
+        Navigation.NavigateTo<DexTypeCountViewModel>();
     }
 }

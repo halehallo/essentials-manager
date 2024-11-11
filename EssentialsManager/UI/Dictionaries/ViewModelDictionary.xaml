@@ -17,4 +17,8 @@
     <DataTemplate DataType="{x:Type viewModel:PokemonOverviewViewModel}">
         <view:PokemonOverview/>
     </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type viewModel:DexTypeCountViewModel}">
+        <view:DexTypeCountOverview/>
+    </DataTemplate>
 </ResourceDictionary>
