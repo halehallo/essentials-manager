@@ -96,7 +96,7 @@
                         FontSize="20" />
                 </Border>
                 
-                <Border Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center"
+                <Border Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
                         Background="{StaticResource BackgroundColorLighter}"
                         Name="SaveDataGridChangesButton">
                     <Border.Clip>

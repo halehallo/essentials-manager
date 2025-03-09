@@ -62,12 +62,7 @@
             </Border.Clip>
             <!-- content border for clipping -->
             <wpf:PieChart  x:Name="Chart" Margin="20" Series="{Binding SeriesCollection}"> 
-                <!-- <wpf:CartesianChart.AxisX> -->
-                <!--     <wpf:Axis Title="Typing Objects" Labels="{Binding TypingObjectLabels}" /> -->
-                <!-- </wpf:CartesianChart.AxisX> -->
-                <!-- <wpf:CartesianChart.AxisY> -->
-                <!--     <wpf:Axis Title="Number of pokemon" /> -->
-                <!-- </wpf:CartesianChart.AxisY> -->
+               
             </wpf:PieChart>
         </Border>
     </Grid>
